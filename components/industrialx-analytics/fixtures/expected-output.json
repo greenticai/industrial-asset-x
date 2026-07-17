@@ -1,0 +1,6 @@
+{
+  "expected_temperature_c": 56.2,
+  "thermal_residual_c": 1.8,
+  "health_score": 100,
+  "risk": "low"
+}

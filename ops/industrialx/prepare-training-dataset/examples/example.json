@@ -1,0 +1,19 @@
+{
+  "evidence": [
+    {
+      "confidence": 1.0,
+      "message": "prepare-training-dataset example uses customer-neutral fixture",
+      "source": "synthetic-fixture"
+    }
+  ],
+  "id": "example-prepare-training-dataset",
+  "spec": {
+    "input_contracts": [
+      "assetx.asset",
+      "industrialx.feature-set",
+      "industrialx.prediction"
+    ],
+    "operation": "prepare-training-dataset",
+    "synthetic": true
+  }
+}

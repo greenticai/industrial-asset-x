@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "evidence": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "spec": {
+      "additionalProperties": true,
+      "type": "object"
+    }
+  },
+  "required": [
+    "id",
+    "spec"
+  ],
+  "type": "object"
+}

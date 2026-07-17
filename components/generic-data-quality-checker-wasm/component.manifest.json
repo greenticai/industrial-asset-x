@@ -1,0 +1,255 @@
+{
+  "$schema": "https://greenticai.github.io/greentic-component/schemas/v1/component.manifest.schema.json",
+  "artifacts": {
+    "component_wasm": "target/wasm32-wasip2/release/generic_data_quality_checker_wasm.wasm"
+  },
+  "capabilities": {
+    "host": {
+      "secrets": {
+        "required": []
+      },
+      "telemetry": {
+        "scope": "node"
+      }
+    },
+    "wasi": {
+      "clocks": true,
+      "filesystem": {
+        "mode": "none",
+        "mounts": []
+      },
+      "random": true
+    }
+  },
+  "config_schema": {
+    "additionalProperties": false,
+    "properties": {},
+    "required": [],
+    "type": "object"
+  },
+  "default_operation": "validate-data-quality",
+  "describe_export": "describe",
+  "dev_flows": {
+    "custom": {
+      "format": "flow-ir-json",
+      "graph": {
+        "description": "Auto-generated custom config for com.example.generic-data-quality-checker-wasm",
+        "id": "com.example.generic-data-quality-checker-wasm.custom",
+        "kind": "component-config",
+        "nodes": {
+          "ask_config": {
+            "questions": {
+              "fields": [
+                {
+                  "default": "Hello from generic-data-quality-checker-wasm!",
+                  "id": "input",
+                  "prompt": "Input:",
+                  "type": "string"
+                }
+              ]
+            },
+            "routing": [
+              {
+                "to": "emit_config"
+              }
+            ]
+          },
+          "emit_config": {
+            "template": "{\n  \"node_id\": \"generic-data-quality-checker-wasm\",\n  \"node\": {\n    \"validate-data-quality\": {\n      \"input\": {\n        \"input\": \"{{state.input}}\"\n      }\n    },\n    \"routing\": [\n      { \"to\": \"NEXT_NODE_PLACEHOLDER\" }\n    ]\n  }\n}"
+          }
+        }
+      }
+    },
+    "default": {
+      "format": "flow-ir-json",
+      "graph": {
+        "description": "Auto-generated default config for com.example.generic-data-quality-checker-wasm",
+        "id": "com.example.generic-data-quality-checker-wasm.default",
+        "kind": "component-config",
+        "nodes": {
+          "emit_config": {
+            "template": "{\n  \"node_id\": \"generic-data-quality-checker-wasm\",\n  \"node\": {\n    \"validate-data-quality\": {\n      \"input\": {\n        \"input\": \"Hello from generic-data-quality-checker-wasm!\"\n      }\n    },\n    \"routing\": [\n      { \"to\": \"NEXT_NODE_PLACEHOLDER\" }\n    ]\n  }\n}"
+          }
+        }
+      }
+    }
+  },
+  "hashes": {
+    "component_wasm": "blake3:d20b802efac50ab5049b0fdd490b7b05c0e70d3e4429ec8d9cd6c72e4b6a6d75"
+  },
+  "id": "com.example.generic-data-quality-checker-wasm",
+  "limits": {
+    "memory_mb": 128,
+    "wall_time_ms": 1000
+  },
+  "name": "generic-data-quality-checker-wasm",
+  "operations": [
+    {
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "input": {
+            "default": "Hello from generic-data-quality-checker-wasm!",
+            "type": "string"
+          }
+        },
+        "required": [
+          "input"
+        ],
+        "title": "generic-data-quality-checker-wasm validate-data-quality input",
+        "type": "object"
+      },
+      "name": "validate-data-quality",
+      "output_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "message"
+        ],
+        "title": "generic-data-quality-checker-wasm validate-data-quality output",
+        "type": "object"
+      }
+    },
+    {
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "mode": {
+            "enum": [
+              "default",
+              "setup",
+              "install",
+              "update",
+              "upgrade",
+              "remove"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "mode"
+        ],
+        "title": "generic-data-quality-checker-wasm qa-spec input",
+        "type": "object"
+      },
+      "name": "qa-spec",
+      "output_schema": {
+        "additionalProperties": true,
+        "properties": {
+          "description_i18n_key": {
+            "type": "string"
+          },
+          "fields": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "mode": {
+            "enum": [
+              "setup",
+              "update",
+              "remove"
+            ],
+            "type": "string"
+          },
+          "title_i18n_key": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "mode",
+          "fields"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": true,
+        "properties": {
+          "answers": {
+            "type": "object"
+          },
+          "current_config": {
+            "type": "object"
+          },
+          "mode": {
+            "type": "string"
+          }
+        },
+        "title": "generic-data-quality-checker-wasm apply-answers input",
+        "type": "object"
+      },
+      "name": "apply-answers",
+      "output_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": true,
+        "properties": {
+          "config": {
+            "type": "object"
+          },
+          "errors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "ok": {
+            "type": "boolean"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "ok",
+          "warnings",
+          "errors"
+        ],
+        "title": "generic-data-quality-checker-wasm apply-answers output",
+        "type": "object"
+      }
+    },
+    {
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "title": "generic-data-quality-checker-wasm i18n-keys input",
+        "type": "object"
+      },
+      "name": "i18n-keys",
+      "output_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "items": {
+          "type": "string"
+        },
+        "title": "generic-data-quality-checker-wasm i18n-keys output",
+        "type": "array"
+      }
+    }
+  ],
+  "profiles": {
+    "default": "stateless",
+    "supported": [
+      "stateless"
+    ]
+  },
+  "secret_requirements": [],
+  "supports": [
+    "messaging"
+  ],
+  "version": "0.1.0",
+  "world": "greentic:component/component@0.6.0"
+}

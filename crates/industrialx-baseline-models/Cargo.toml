@@ -1,0 +1,15 @@
+[package]
+name = "industrialx-baseline-models"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Deterministic baseline models for Industrial-X asset health."
+repository.workspace = true
+homepage.workspace = true
+readme = "README.md"
+keywords = ["industrial", "baseline", "health"]
+categories = ["algorithms", "science"]
+include = ["src/**", "Cargo.toml", "README.md", "CHANGELOG.md", "../../LICENSE"]
+
+[dependencies]

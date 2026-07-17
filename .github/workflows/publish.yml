@@ -1,0 +1,89 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - v*
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    name: Verify Release
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+      - id: version
+        shell: bash
+        run: |
+          version="$(cargo metadata --no-deps --format-version 1 | python3 -c 'import json,sys; data=json.load(sys.stdin); root=data["resolve"]["root"]; print(next(pkg["version"] for pkg in data["packages"] if pkg["id"] == root))')"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          expected="v$version"
+          actual="${GITHUB_REF_NAME}"
+          if [ "$actual" != "$expected" ]; then
+            echo "Release tag must match Cargo.toml version: expected $expected, got $actual" >&2
+            exit 1
+          fi
+      - run: bash ci/local_check.sh
+
+  publish-crates:
+    name: Publish Crates
+    runs-on: ubuntu-latest
+    needs: verify
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Dry-run publish
+        run: bash ci/local_check.sh package-only
+      - name: Publish to crates.io
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        shell: bash
+        run: |
+          version="${{ needs.verify.outputs.version }}"
+          crates="industrialx-timeseries industrialx-core industrialx-baseline-models industrialx-features industrial-asset-x"
+          for crate in $crates; do
+            if curl --fail --silent --show-error "https://crates.io/api/v1/crates/$crate/$version" >/dev/null; then
+              echo "$crate $version is already published; skipping"
+              continue
+            fi
+            echo "Publishing $crate"
+            for attempt in 1 2 3; do
+              if cargo publish -p "$crate"; then
+                break
+              fi
+              if [ "$attempt" = "3" ]; then
+                exit 1
+              fi
+              sleep $((attempt * 20))
+            done
+            for attempt in 1 2 3 4 5 6; do
+              if curl --fail --silent --show-error "https://crates.io/api/v1/crates/$crate/$version" >/dev/null; then
+                break
+              fi
+              if [ "$attempt" = "6" ]; then
+                echo "$crate $version was published but did not become resolvable" >&2
+                exit 1
+              fi
+              sleep 10
+            done
+          done
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "v${{ needs.verify.outputs.version }}" >/dev/null 2>&1 || \
+            gh release create "v${{ needs.verify.outputs.version }}" --verify-tag --generate-notes

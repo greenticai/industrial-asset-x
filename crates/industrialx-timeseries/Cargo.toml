@@ -1,0 +1,15 @@
+[package]
+name = "industrialx-timeseries"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Deterministic time-series helpers for Industrial-X analytics."
+repository.workspace = true
+homepage.workspace = true
+readme = "README.md"
+keywords = ["industrial", "timeseries", "analytics"]
+categories = ["algorithms", "science"]
+include = ["src/**", "Cargo.toml", "README.md", "CHANGELOG.md", "../../LICENSE"]
+
+[dependencies]

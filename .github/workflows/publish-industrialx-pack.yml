@@ -1,0 +1,36 @@
+name: Publish Industrial-X Pack
+
+on:
+  push:
+    tags:
+      - industrialx-pack-v*
+
+permissions:
+  contents: write
+  packages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-wasip2
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-component
+      - name: Install Greentic tooling
+        run: cargo install greentic-component greentic-flow greentic-pack --locked
+      - name: Build and validate immutable pack
+        run: bash scripts/build-industrialx-pack.sh
+      - name: Upload provenance-bearing artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: industrialx-operations-${{ github.ref_name }}
+          path: |
+            packs/industrialx-operations/*.gtpack
+            packs/industrialx-operations/pack.lock.cbor
+            packs/industrialx-operations/provenance.json
+          if-no-files-found: error

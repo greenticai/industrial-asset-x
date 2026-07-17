@@ -1,0 +1,1007 @@
+{
+  "$schema": "https://greenticai.github.io/greentic-component/schemas/v1/component.manifest.schema.json",
+  "artifacts": {
+    "component_wasm": "target/wasm32-wasip2/release/industrialx_analytics.wasm"
+  },
+  "capabilities": {
+    "host": {
+      "secrets": {
+        "required": []
+      },
+      "telemetry": {
+        "scope": "node"
+      }
+    },
+    "wasi": {
+      "clocks": true,
+      "filesystem": {
+        "mode": "none",
+        "mounts": []
+      },
+      "random": true
+    }
+  },
+  "config_schema": {
+    "additionalProperties": false,
+    "properties": {},
+    "required": [],
+    "type": "object"
+  },
+  "default_operation": "assess-thermal-baseline",
+  "describe_export": "describe",
+  "dev_flows": {
+    "custom": {
+      "format": "flow-ir-json",
+      "graph": {
+        "description": "Auto-generated custom config for industrialx-analytics",
+        "id": "industrialx-analytics.custom",
+        "kind": "component-config",
+        "nodes": {
+          "ask_config": {
+            "questions": {
+              "fields": [
+                {
+                  "id": "ambient_temperature_c",
+                  "prompt": "Ambient Temperature C:",
+                  "type": "number"
+                },
+                {
+                  "id": "cooling_activity_fraction",
+                  "prompt": "Cooling Activity Fraction:",
+                  "type": "number"
+                },
+                {
+                  "id": "cooling_relief_c",
+                  "prompt": "Cooling Relief C:",
+                  "type": "number"
+                },
+                {
+                  "id": "load_fraction",
+                  "prompt": "Load Fraction:",
+                  "type": "number"
+                },
+                {
+                  "id": "load_rise_c",
+                  "prompt": "Load Rise C:",
+                  "type": "number"
+                },
+                {
+                  "id": "lower",
+                  "prompt": "Lower:",
+                  "type": "number"
+                },
+                {
+                  "id": "no_load_rise_c",
+                  "prompt": "No Load Rise C:",
+                  "type": "number"
+                },
+                {
+                  "id": "observed_temperature_c",
+                  "prompt": "Observed Temperature C:",
+                  "type": "number"
+                },
+                {
+                  "id": "prior_evidence",
+                  "prompt": "Prior Evidence:",
+                  "type": "string"
+                },
+                {
+                  "id": "residual_band_c",
+                  "prompt": "Residual Band C:",
+                  "type": "number"
+                },
+                {
+                  "id": "samples",
+                  "prompt": "Samples:",
+                  "type": "string"
+                },
+                {
+                  "id": "upper",
+                  "prompt": "Upper:",
+                  "type": "number"
+                },
+                {
+                  "id": "value",
+                  "prompt": "Value:",
+                  "type": "number"
+                },
+                {
+                  "id": "values",
+                  "prompt": "Values:",
+                  "type": "string"
+                },
+                {
+                  "id": "window",
+                  "prompt": "Window:",
+                  "type": "number"
+                }
+              ]
+            },
+            "routing": [
+              {
+                "to": "emit_config"
+              }
+            ]
+          },
+          "emit_config": {
+            "template": "{\n  \"node_id\": \"industrialx-analytics\",\n  \"node\": {\n    \"assess-thermal-baseline\": {\n      \"input\": {\n        \"ambient_temperature_c\": {{state.ambient_temperature_c}},\n        \"cooling_activity_fraction\": {{state.cooling_activity_fraction}},\n        \"cooling_relief_c\": {{state.cooling_relief_c}},\n        \"load_fraction\": {{state.load_fraction}},\n        \"load_rise_c\": {{state.load_rise_c}},\n        \"lower\": {{state.lower}},\n        \"no_load_rise_c\": {{state.no_load_rise_c}},\n        \"observed_temperature_c\": {{state.observed_temperature_c}},\n        \"prior_evidence\": \"{{state.prior_evidence}}\",\n        \"residual_band_c\": {{state.residual_band_c}},\n        \"samples\": \"{{state.samples}}\",\n        \"upper\": {{state.upper}},\n        \"value\": {{state.value}},\n        \"values\": \"{{state.values}}\",\n        \"window\": {{state.window}}\n      }\n    },\n    \"routing\": [\n      { \"to\": \"NEXT_NODE_PLACEHOLDER\" }\n    ]\n  }\n}"
+          }
+        }
+      }
+    },
+    "default": {
+      "format": "flow-ir-json",
+      "graph": {
+        "description": "Auto-generated default config for industrialx-analytics",
+        "id": "industrialx-analytics.default",
+        "kind": "component-config",
+        "nodes": {
+          "emit_config": {
+            "template": "{\n  \"node_id\": \"industrialx-analytics\",\n  \"node\": {\n    \"assess-thermal-baseline\": {\n      \"input\": {\n      }\n    },\n    \"routing\": [\n      { \"to\": \"NEXT_NODE_PLACEHOLDER\" }\n    ]\n  }\n}"
+          }
+        }
+      }
+    }
+  },
+  "hashes": {
+    "component_wasm": "blake3:c6c8465d9301a49e7838a746d40f18e02a64c5ad438673f0c0327c0151c7769e"
+  },
+  "id": "industrialx-analytics",
+  "limits": {
+    "memory_mb": 128,
+    "wall_time_ms": 1000
+  },
+  "name": "industrialx-analytics",
+  "operations": [
+    {
+      "input_schema": {
+        "$id": "https://greentic.ai/schemas/industrialx/analytics-input/0.1.0",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "ambient_temperature_c": {
+            "type": "number"
+          },
+          "cooling_activity_fraction": {
+            "type": "number"
+          },
+          "cooling_relief_c": {
+            "type": "number"
+          },
+          "load_fraction": {
+            "type": "number"
+          },
+          "load_rise_c": {
+            "type": "number"
+          },
+          "lower": {
+            "type": "number"
+          },
+          "no_load_rise_c": {
+            "type": "number"
+          },
+          "observed_temperature_c": {
+            "type": "number"
+          },
+          "prior_evidence": {
+            "items": {
+              "type": "object"
+            },
+            "maxItems": 100,
+            "type": "array"
+          },
+          "residual_band_c": {
+            "type": "number"
+          },
+          "samples": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "quality": {
+                  "enum": [
+                    "good",
+                    "missing",
+                    "bad",
+                    "estimated"
+                  ]
+                },
+                "timestamp_ms": {
+                  "type": "integer"
+                },
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "timestamp_ms",
+                "value",
+                "quality"
+              ],
+              "type": "object"
+            },
+            "maxItems": 10000,
+            "type": "array"
+          },
+          "upper": {
+            "type": "number"
+          },
+          "value": {
+            "type": "number"
+          },
+          "values": {
+            "items": {
+              "type": "number"
+            },
+            "maxItems": 10000,
+            "type": "array"
+          },
+          "window": {
+            "maximum": 10000,
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "name": "profile-signals",
+      "output_schema": {
+        "$id": "https://greentic.ai/schemas/industrialx/analytics-output/0.1.0",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "diagnostics": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "evidence": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "ok": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ok",
+          "data",
+          "evidence",
+          "diagnostics"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "input_schema": {
+        "$id": "https://greentic.ai/schemas/industrialx/analytics-input/0.1.0",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "ambient_temperature_c": {
+            "type": "number"
+          },
+          "cooling_activity_fraction": {
+            "type": "number"
+          },
+          "cooling_relief_c": {
+            "type": "number"
+          },
+          "load_fraction": {
+            "type": "number"
+          },
+          "load_rise_c": {
+            "type": "number"
+          },
+          "lower": {
+            "type": "number"
+          },
+          "no_load_rise_c": {
+            "type": "number"
+          },
+          "observed_temperature_c": {
+            "type": "number"
+          },
+          "prior_evidence": {
+            "items": {
+              "type": "object"
+            },
+            "maxItems": 100,
+            "type": "array"
+          },
+          "residual_band_c": {
+            "type": "number"
+          },
+          "samples": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "quality": {
+                  "enum": [
+                    "good",
+                    "missing",
+                    "bad",
+                    "estimated"
+                  ]
+                },
+                "timestamp_ms": {
+                  "type": "integer"
+                },
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "timestamp_ms",
+                "value",
+                "quality"
+              ],
+              "type": "object"
+            },
+            "maxItems": 10000,
+            "type": "array"
+          },
+          "upper": {
+            "type": "number"
+          },
+          "value": {
+            "type": "number"
+          },
+          "values": {
+            "items": {
+              "type": "number"
+            },
+            "maxItems": 10000,
+            "type": "array"
+          },
+          "window": {
+            "maximum": 10000,
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "name": "validate-data-quality",
+      "output_schema": {
+        "$id": "https://greentic.ai/schemas/industrialx/analytics-output/0.1.0",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "diagnostics": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "evidence": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "ok": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ok",
+          "data",
+          "evidence",
+          "diagnostics"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "input_schema": {
+        "$id": "https://greentic.ai/schemas/industrialx/analytics-input/0.1.0",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "ambient_temperature_c": {
+            "type": "number"
+          },
+          "cooling_activity_fraction": {
+            "type": "number"
+          },
+          "cooling_relief_c": {
+            "type": "number"
+          },
+          "load_fraction": {
+            "type": "number"
+          },
+          "load_rise_c": {
+            "type": "number"
+          },
+          "lower": {
+            "type": "number"
+          },
+          "no_load_rise_c": {
+            "type": "number"
+          },
+          "observed_temperature_c": {
+            "type": "number"
+          },
+          "prior_evidence": {
+            "items": {
+              "type": "object"
+            },
+            "maxItems": 100,
+            "type": "array"
+          },
+          "residual_band_c": {
+            "type": "number"
+          },
+          "samples": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "quality": {
+                  "enum": [
+                    "good",
+                    "missing",
+                    "bad",
+                    "estimated"
+                  ]
+                },
+                "timestamp_ms": {
+                  "type": "integer"
+                },
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "timestamp_ms",
+                "value",
+                "quality"
+              ],
+              "type": "object"
+            },
+            "maxItems": 10000,
+            "type": "array"
+          },
+          "upper": {
+            "type": "number"
+          },
+          "value": {
+            "type": "number"
+          },
+          "values": {
+            "items": {
+              "type": "number"
+            },
+            "maxItems": 10000,
+            "type": "array"
+          },
+          "window": {
+            "maximum": 10000,
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "name": "generate-features",
+      "output_schema": {
+        "$id": "https://greentic.ai/schemas/industrialx/analytics-output/0.1.0",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "diagnostics": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "evidence": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "ok": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ok",
+          "data",
+          "evidence",
+          "diagnostics"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "input_schema": {
+        "$id": "https://greentic.ai/schemas/industrialx/analytics-input/0.1.0",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "ambient_temperature_c": {
+            "type": "number"
+          },
+          "cooling_activity_fraction": {
+            "type": "number"
+          },
+          "cooling_relief_c": {
+            "type": "number"
+          },
+          "load_fraction": {
+            "type": "number"
+          },
+          "load_rise_c": {
+            "type": "number"
+          },
+          "lower": {
+            "type": "number"
+          },
+          "no_load_rise_c": {
+            "type": "number"
+          },
+          "observed_temperature_c": {
+            "type": "number"
+          },
+          "prior_evidence": {
+            "items": {
+              "type": "object"
+            },
+            "maxItems": 100,
+            "type": "array"
+          },
+          "residual_band_c": {
+            "type": "number"
+          },
+          "samples": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "quality": {
+                  "enum": [
+                    "good",
+                    "missing",
+                    "bad",
+                    "estimated"
+                  ]
+                },
+                "timestamp_ms": {
+                  "type": "integer"
+                },
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "timestamp_ms",
+                "value",
+                "quality"
+              ],
+              "type": "object"
+            },
+            "maxItems": 10000,
+            "type": "array"
+          },
+          "upper": {
+            "type": "number"
+          },
+          "value": {
+            "type": "number"
+          },
+          "values": {
+            "items": {
+              "type": "number"
+            },
+            "maxItems": 10000,
+            "type": "array"
+          },
+          "window": {
+            "maximum": 10000,
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "name": "assess-thermal-baseline",
+      "output_schema": {
+        "$id": "https://greentic.ai/schemas/industrialx/analytics-output/0.1.0",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "diagnostics": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "evidence": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "ok": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ok",
+          "data",
+          "evidence",
+          "diagnostics"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "input_schema": {
+        "$id": "https://greentic.ai/schemas/industrialx/analytics-input/0.1.0",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "ambient_temperature_c": {
+            "type": "number"
+          },
+          "cooling_activity_fraction": {
+            "type": "number"
+          },
+          "cooling_relief_c": {
+            "type": "number"
+          },
+          "load_fraction": {
+            "type": "number"
+          },
+          "load_rise_c": {
+            "type": "number"
+          },
+          "lower": {
+            "type": "number"
+          },
+          "no_load_rise_c": {
+            "type": "number"
+          },
+          "observed_temperature_c": {
+            "type": "number"
+          },
+          "prior_evidence": {
+            "items": {
+              "type": "object"
+            },
+            "maxItems": 100,
+            "type": "array"
+          },
+          "residual_band_c": {
+            "type": "number"
+          },
+          "samples": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "quality": {
+                  "enum": [
+                    "good",
+                    "missing",
+                    "bad",
+                    "estimated"
+                  ]
+                },
+                "timestamp_ms": {
+                  "type": "integer"
+                },
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "timestamp_ms",
+                "value",
+                "quality"
+              ],
+              "type": "object"
+            },
+            "maxItems": 10000,
+            "type": "array"
+          },
+          "upper": {
+            "type": "number"
+          },
+          "value": {
+            "type": "number"
+          },
+          "values": {
+            "items": {
+              "type": "number"
+            },
+            "maxItems": 10000,
+            "type": "array"
+          },
+          "window": {
+            "maximum": 10000,
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "name": "score-asset-health",
+      "output_schema": {
+        "$id": "https://greentic.ai/schemas/industrialx/analytics-output/0.1.0",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "diagnostics": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "evidence": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "ok": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ok",
+          "data",
+          "evidence",
+          "diagnostics"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "mode": {
+            "enum": [
+              "default",
+              "setup",
+              "install",
+              "update",
+              "upgrade",
+              "remove"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "mode"
+        ],
+        "title": "industrialx-analytics qa-spec input",
+        "type": "object"
+      },
+      "name": "qa-spec",
+      "output_schema": {
+        "additionalProperties": true,
+        "properties": {
+          "description_i18n_key": {
+            "type": "string"
+          },
+          "fields": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "mode": {
+            "enum": [
+              "setup",
+              "update",
+              "remove"
+            ],
+            "type": "string"
+          },
+          "title_i18n_key": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "mode",
+          "fields"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": true,
+        "properties": {
+          "answers": {
+            "type": "object"
+          },
+          "current_config": {
+            "type": "object"
+          },
+          "mode": {
+            "type": "string"
+          }
+        },
+        "title": "industrialx-analytics apply-answers input",
+        "type": "object"
+      },
+      "name": "apply-answers",
+      "output_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": true,
+        "properties": {
+          "config": {
+            "type": "object"
+          },
+          "errors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "ok": {
+            "type": "boolean"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "ok",
+          "warnings",
+          "errors"
+        ],
+        "title": "industrialx-analytics apply-answers output",
+        "type": "object"
+      }
+    },
+    {
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "title": "industrialx-analytics i18n-keys input",
+        "type": "object"
+      },
+      "name": "i18n-keys",
+      "output_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "items": {
+          "type": "string"
+        },
+        "title": "industrialx-analytics i18n-keys output",
+        "type": "array"
+      }
+    }
+  ],
+  "profiles": {
+    "default": "stateless",
+    "supported": [
+      "stateless"
+    ]
+  },
+  "secret_requirements": [],
+  "supports": [
+    "messaging"
+  ],
+  "version": "0.1.0",
+  "world": "greentic:component/component@0.6.0"
+}

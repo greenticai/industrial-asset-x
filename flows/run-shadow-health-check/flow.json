@@ -1,0 +1,41 @@
+{
+  "customer_specific_content_allowed": false,
+  "evidence_propagation": "append-step-evidence",
+  "id": "run-shadow-health-check",
+  "steps": [
+    {
+      "id": "step-1",
+      "inputs": [
+        "flow.input"
+      ],
+      "on_error": "stop-with-diagnostics",
+      "op": "industrialx.generate-features",
+      "outputs": [
+        "step-1.output"
+      ]
+    },
+    {
+      "id": "step-2",
+      "inputs": [
+        "previous.output"
+      ],
+      "on_error": "stop-with-diagnostics",
+      "op": "industrialx.score-asset-health",
+      "outputs": [
+        "step-2.output"
+      ]
+    },
+    {
+      "id": "step-3",
+      "inputs": [
+        "previous.output"
+      ],
+      "on_error": "stop-with-diagnostics",
+      "op": "industrialx.evaluate-shadow-performance",
+      "outputs": [
+        "step-3.output"
+      ]
+    }
+  ],
+  "version": "0.1.0"
+}

@@ -1,0 +1,17 @@
+/target
+/.greentic/
+
+# Wizard-generated component build output (Rust/WASM artifacts).
+/components/*/target/
+/components/*/dist/
+
+# Reproducible pack artifacts produced by the pack build scripts.
+/packs/*/dist/
+
+# Local coverage output when a tool is configured outside the root target tree.
+/coverage/
+
+# Common local editor and operating-system metadata.
+.DS_Store
+*.swp
+*.swo

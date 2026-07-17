@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "global": {
+    "line_coverage_min": 60.0
+  },
+  "defaults": {
+    "per_file_line_coverage_min": 60.0
+  },
+  "exclusions": {
+    "files": [
+      "src/main.rs",
+      "benches/perf.rs",
+      "components/industrialx-analytics/src/i18n.rs",
+      "components/industrialx-analytics/src/i18n_bundle.rs",
+      "components/industrialx-analytics/src/lib.rs",
+      "components/industrialx-analytics/src/qa.rs",
+      "components/generic-data-quality-checker-wasm/src/i18n.rs",
+      "components/generic-data-quality-checker-wasm/src/i18n_bundle.rs",
+      "components/generic-data-quality-checker-wasm/src/lib.rs",
+      "components/generic-data-quality-checker-wasm/src/qa.rs",
+      "components/generic-feature-extractor-wasm/src/i18n.rs",
+      "components/generic-feature-extractor-wasm/src/i18n_bundle.rs",
+      "components/generic-feature-extractor-wasm/src/lib.rs",
+      "components/generic-feature-extractor-wasm/src/qa.rs",
+      "components/generic-health-scorer-wasm/src/i18n.rs",
+      "components/generic-health-scorer-wasm/src/i18n_bundle.rs",
+      "components/generic-health-scorer-wasm/src/lib.rs",
+      "components/generic-health-scorer-wasm/src/qa.rs",
+      "components/generic-signal-profiler-wasm/src/i18n.rs",
+      "components/generic-signal-profiler-wasm/src/i18n_bundle.rs",
+      "components/generic-signal-profiler-wasm/src/lib.rs",
+      "components/generic-signal-profiler-wasm/src/qa.rs",
+      "components/rule-based-synthetic-generator-wasm/src/i18n.rs",
+      "components/rule-based-synthetic-generator-wasm/src/i18n_bundle.rs",
+      "components/rule-based-synthetic-generator-wasm/src/lib.rs",
+      "components/rule-based-synthetic-generator-wasm/src/qa.rs"
+    ]
+  },
+  "per_file": {
+    "src/lib.rs": {
+      "line_coverage_min": 70.0
+    },
+    "crates/industrialx-core/src/lib.rs": {
+      "line_coverage_min": 80.0
+    },
+    "crates/industrialx-timeseries/src/lib.rs": {
+      "line_coverage_min": 75.0
+    },
+    "crates/industrialx-baseline-models/src/lib.rs": {
+      "line_coverage_min": 80.0
+    }
+  }
+}

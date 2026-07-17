@@ -1,0 +1,53 @@
+{
+  "asset_templates": [
+    "playbooks/substation-transformer-health-basic/playbook.json"
+  ],
+  "compatibility_report": "compatibility-report.json",
+  "components": [
+    "generic-signal-profiler-wasm",
+    "generic-feature-extractor-wasm",
+    "generic-health-scorer-wasm"
+  ],
+  "fixtures": [
+    "fixtures.json"
+  ],
+  "flows": [
+    "validate-industrial-data",
+    "build-asset-health-baseline",
+    "run-shadow-health-check"
+  ],
+  "id": "substation-transformer-health-basic",
+  "kind": "storex.package",
+  "license": "MIT",
+  "package_type": "maintenance_playbook",
+  "playbooks": [
+    "playbooks/substation-transformer-health-basic"
+  ],
+  "publisher": "greentic",
+  "quality_gates": [
+    "schema-valid",
+    "fixtures-valid",
+    "customer-neutral",
+    "component-references-valid"
+  ],
+  "required_sensor_types": [
+    "oil_temperature",
+    "winding_temperature",
+    "load",
+    "current",
+    "voltage",
+    "cooling_fan_status",
+    "cooling_pump_status",
+    "tap_position"
+  ],
+  "supported_asset_types": [
+    "substation_transformer"
+  ],
+  "synthetic_demo_safe": true,
+  "validation_report": "validation-report.json",
+  "version": "0.1.0",
+  "views": [
+    "assetx.asset-health-summary",
+    "industrialx.prediction-explanation"
+  ]
+}

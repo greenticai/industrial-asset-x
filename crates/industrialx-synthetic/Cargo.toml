@@ -1,0 +1,11 @@
+[package]
+name = "industrialx-synthetic"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Rule-based synthetic scenario generation for Industrial-X stress tests."
+repository.workspace = true
+publish = false
+
+[dependencies]

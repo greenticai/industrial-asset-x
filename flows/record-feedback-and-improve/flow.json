@@ -1,0 +1,19 @@
+{
+  "customer_specific_content_allowed": false,
+  "evidence_propagation": "append-step-evidence",
+  "id": "record-feedback-and-improve",
+  "steps": [
+    {
+      "id": "step-1",
+      "inputs": [
+        "flow.input"
+      ],
+      "on_error": "stop-with-diagnostics",
+      "op": "industrialx.evaluate-shadow-performance",
+      "outputs": [
+        "step-1.output"
+      ]
+    }
+  ],
+  "version": "0.1.0"
+}

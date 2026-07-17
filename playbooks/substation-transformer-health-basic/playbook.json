@@ -1,0 +1,156 @@
+{
+  "asset_template": {
+    "components": [
+      "main_tank",
+      "windings",
+      "cooling_system",
+      "tap_changer"
+    ],
+    "type": "substation_transformer"
+  },
+  "baseline_scoring": {
+    "evidence_mapping": [
+      "residual",
+      "sensor_quality",
+      "cooling_status"
+    ],
+    "method": "control-band-residual",
+    "risk_levels": [
+      {
+        "level": "low",
+        "min_score": 80
+      },
+      {
+        "level": "medium",
+        "min_score": 50
+      },
+      {
+        "level": "high",
+        "min_score": 0
+      }
+    ]
+  },
+  "components": [
+    "main-tank",
+    "windings",
+    "cooling-system",
+    "tap-changer"
+  ],
+  "failure_modes": [
+    "load-related overheating",
+    "cooling system degradation",
+    "abnormal winding temperature",
+    "tap changer abnormality",
+    "sensor quality issue"
+  ],
+  "feature_definitions": [
+    {
+      "implementation": "industrialx-features::load_normalized_temperature",
+      "name": "load_normalized_temperature"
+    },
+    {
+      "implementation": "industrialx-timeseries::rate_of_change",
+      "name": "temperature_rate_of_change"
+    },
+    {
+      "implementation": "generic-data-quality-checker-wasm",
+      "name": "cooling_status_consistency"
+    }
+  ],
+  "features": [
+    "load_normalized_temperature",
+    "temperature_rate_of_change",
+    "cooling_status_consistency"
+  ],
+  "feedback_questions": [
+    "Was the alert useful?",
+    "Was maintenance confirmed?",
+    "Was this a sensor issue?"
+  ],
+  "id": "substation-transformer-health-basic",
+  "recommendation_rules": [
+    {
+      "action": "inspect cooling system",
+      "evidence_required": [
+        "cooling_status",
+        "temperature_residual"
+      ],
+      "id": "inspect-cooling",
+      "when": {
+        "failure_mode": "cooling system degradation",
+        "risk_level": "high"
+      }
+    },
+    {
+      "action": "review signal quality",
+      "evidence_required": [
+        "flatline",
+        "missingness"
+      ],
+      "id": "review-sensor-quality",
+      "when": {
+        "failure_mode": "sensor quality issue"
+      }
+    }
+  ],
+  "sensor_requirements": [
+    {
+      "expected_frequency": "5m",
+      "minimum_coverage": 0.95,
+      "name": "oil_temperature",
+      "required": true,
+      "unit": "numeric"
+    },
+    {
+      "expected_frequency": "5m",
+      "minimum_coverage": 0.95,
+      "name": "winding_temperature",
+      "required": true,
+      "unit": "numeric"
+    },
+    {
+      "expected_frequency": "5m",
+      "minimum_coverage": 0.95,
+      "name": "load",
+      "required": true,
+      "unit": "numeric"
+    },
+    {
+      "expected_frequency": "5m",
+      "minimum_coverage": 0.95,
+      "name": "current",
+      "required": true,
+      "unit": "numeric"
+    },
+    {
+      "expected_frequency": "5m",
+      "minimum_coverage": 0.95,
+      "name": "voltage",
+      "required": true,
+      "unit": "numeric"
+    },
+    {
+      "expected_frequency": "5m",
+      "minimum_coverage": 0.95,
+      "name": "cooling_fan_status",
+      "required": true,
+      "unit": "status"
+    },
+    {
+      "expected_frequency": "5m",
+      "minimum_coverage": 0.95,
+      "name": "cooling_pump_status",
+      "required": true,
+      "unit": "status"
+    },
+    {
+      "expected_frequency": "5m",
+      "minimum_coverage": 0.95,
+      "name": "tap_position",
+      "required": true,
+      "unit": "numeric"
+    }
+  ],
+  "synthetic_demo_safe": true,
+  "version": "0.1.0"
+}

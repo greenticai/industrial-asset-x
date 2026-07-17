@@ -1,0 +1,19 @@
+{
+  "evidence": [
+    {
+      "confidence": 1.0,
+      "message": "score-asset-health example uses customer-neutral fixture",
+      "source": "synthetic-fixture"
+    }
+  ],
+  "id": "example-score-asset-health",
+  "spec": {
+    "input_contracts": [
+      "assetx.asset",
+      "industrialx.feature-set",
+      "industrialx.prediction"
+    ],
+    "operation": "score-asset-health",
+    "synthetic": true
+  }
+}

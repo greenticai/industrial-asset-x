@@ -1,0 +1,5 @@
+{
+  "namespace": "assetx",
+  "version": "0.1.0",
+  "resolves": ["site", "asset", "component", "sensor", "failure-mode", "maintenance-action", "health-state", "maintenance-outcome"]
+}

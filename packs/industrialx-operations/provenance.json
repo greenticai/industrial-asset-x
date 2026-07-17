@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "source_repository": "https://github.com/greenticai/industrial-asset-x",
+  "source_revision": "release-tag",
+  "build_command": "bash scripts/build-industrialx-pack.sh",
+  "component_world": "greentic:component/component@0.6.0",
+  "deterministic": true
+}

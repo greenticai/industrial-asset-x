@@ -1,0 +1,19 @@
+{
+  "evidence": [
+    {
+      "confidence": 1.0,
+      "message": "register-model example uses customer-neutral fixture",
+      "source": "synthetic-fixture"
+    }
+  ],
+  "id": "example-register-model",
+  "spec": {
+    "input_contracts": [
+      "assetx.asset",
+      "industrialx.feature-set",
+      "industrialx.prediction"
+    ],
+    "operation": "register-model",
+    "synthetic": true
+  }
+}

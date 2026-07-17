@@ -1,0 +1,19 @@
+{
+  "evidence": [
+    {
+      "confidence": 1.0,
+      "message": "train-model-candidates example uses customer-neutral fixture",
+      "source": "synthetic-fixture"
+    }
+  ],
+  "id": "example-train-model-candidates",
+  "spec": {
+    "input_contracts": [
+      "assetx.asset",
+      "industrialx.feature-set",
+      "industrialx.prediction"
+    ],
+    "operation": "train-model-candidates",
+    "synthetic": true
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "evidence": [
+    {
+      "confidence": 1.0,
+      "message": "evaluate-shadow-performance example uses customer-neutral fixture",
+      "source": "synthetic-fixture"
+    }
+  ],
+  "id": "example-evaluate-shadow-performance",
+  "spec": {
+    "input_contracts": [
+      "assetx.asset",
+      "industrialx.feature-set",
+      "industrialx.prediction"
+    ],
+    "operation": "evaluate-shadow-performance",
+    "synthetic": true
+  }
+}

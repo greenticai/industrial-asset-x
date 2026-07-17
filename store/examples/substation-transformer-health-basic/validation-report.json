@@ -1,0 +1,13 @@
+{
+  "id": "validation-substation-transformer-health-basic",
+  "kind": "storex.validation-report",
+  "version": "0.1.0",
+  "status": "passed",
+  "checks": [
+    "manifest complete",
+    "license metadata present",
+    "publisher metadata present",
+    "fixtures included",
+    "no banned customer-specific terms"
+  ]
+}

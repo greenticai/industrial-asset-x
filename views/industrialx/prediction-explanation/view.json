@@ -1,0 +1,34 @@
+{
+  "actions": [
+    "review",
+    "export-evidence"
+  ],
+  "bindings": [
+    {
+      "contract_path": "$.id",
+      "field": "id"
+    },
+    {
+      "contract_path": "$.spec.status",
+      "field": "status"
+    },
+    {
+      "contract_path": "$.evidence",
+      "field": "evidence"
+    }
+  ],
+  "filters": [
+    "asset_type",
+    "status",
+    "risk_level"
+  ],
+  "id": "industrialx.prediction-explanation",
+  "renderer": "neutral-json",
+  "sections": [
+    "summary",
+    "metrics",
+    "evidence",
+    "actions"
+  ],
+  "version": "0.1.0"
+}

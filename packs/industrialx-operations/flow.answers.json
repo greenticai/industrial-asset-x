@@ -1,0 +1,42 @@
+{
+  "schema_id": "greentic-flow.wizard.plan",
+  "schema_version": "2.0.0",
+  "actions": [
+    {"action":"add-flow","flow":"flows/validate-industrial-data.ygtc","flow_id":"validate-industrial-data","flow_type":"messaging"},
+    {"action":"add-flow","flow":"flows/build-asset-health-baseline.ygtc","flow_id":"build-asset-health-baseline","flow_type":"messaging"},
+    {"action":"add-flow","flow":"flows/run-shadow-health-check.ygtc","flow_id":"run-shadow-health-check","flow_type":"messaging"},
+    {
+      "action":"add-step",
+      "flow":"flows/validate-industrial-data.ygtc",
+      "step_id":"validate",
+      "component":"components/industrialx-analytics/industrialx-analytics.wasm",
+      "mode":"default",
+      "operation":"validate-data-quality",
+      "answers":{"api_key":"unused","region":"local","webhook_base_url":"https://example.invalid"},
+      "in_map":{"missing_ratio":"{{in.input.missing_ratio}}","coverage_ratio":"{{in.input.coverage_ratio}}"},
+      "routing":"out"
+    },
+    {
+      "action":"add-step",
+      "flow":"flows/build-asset-health-baseline.ygtc",
+      "step_id":"assess",
+      "component":"components/industrialx-analytics/industrialx-analytics.wasm",
+      "mode":"default",
+      "operation":"assess-thermal-baseline",
+      "answers":{"api_key":"unused","region":"local","webhook_base_url":"https://example.invalid"},
+      "in_map":{"observed_temperature_c":"{{in.input.observed_temperature_c}}","ambient_temperature_c":"{{in.input.ambient_temperature_c}}","load_fraction":"{{in.input.load_fraction}}","cooling_activity_fraction":"{{in.input.cooling_activity_fraction}}","no_load_rise_c":"{{in.input.no_load_rise_c}}","load_rise_c":"{{in.input.load_rise_c}}","cooling_relief_c":"{{in.input.cooling_relief_c}}","residual_band_c":"{{in.input.residual_band_c}}"},
+      "routing":"out"
+    },
+    {
+      "action":"add-step",
+      "flow":"flows/run-shadow-health-check.ygtc",
+      "step_id":"assess",
+      "component":"components/industrialx-analytics/industrialx-analytics.wasm",
+      "mode":"default",
+      "operation":"assess-thermal-baseline",
+      "answers":{"api_key":"unused","region":"local","webhook_base_url":"https://example.invalid"},
+      "in_map":{"observed_temperature_c":"{{in.input.observed_temperature_c}}","ambient_temperature_c":"{{in.input.ambient_temperature_c}}","load_fraction":"{{in.input.load_fraction}}","cooling_activity_fraction":"{{in.input.cooling_activity_fraction}}","no_load_rise_c":"{{in.input.no_load_rise_c}}","load_rise_c":"{{in.input.load_rise_c}}","cooling_relief_c":"{{in.input.cooling_relief_c}}","residual_band_c":"{{in.input.residual_band_c}}"},
+      "routing":"out"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "wizard_id": "greentic-component.wizard.run",
+  "schema_id": "greentic-component.wizard.run",
+  "schema_version": "1.0.0",
+  "locale": "en-GB",
+  "answers": {
+    "schema": "component-wizard-run/v1",
+    "mode": "create",
+    "fields": {
+      "component_name": "industrialx-analytics",
+      "output_dir": "components/industrialx-analytics",
+      "abi_version": "0.6.0",
+      "operations": [
+        "profile-signals",
+        "validate-data-quality",
+        "generate-features",
+        "assess-thermal-baseline",
+        "score-asset-health"
+      ],
+      "default_operation": "assess-thermal-baseline",
+      "filesystem_mode": "none",
+      "filesystem_mounts": "",
+      "http_client": false,
+      "http_server": false,
+      "messaging_inbound": false,
+      "messaging_outbound": false,
+      "events_inbound": false,
+      "events_outbound": false,
+      "state_read": false,
+      "state_write": false,
+      "state_delete": false,
+      "telemetry_scope": "node",
+      "secrets_enabled": false,
+      "secret_keys": "",
+      "config_fields": ""
+    }
+  },
+  "locks": {
+    "execution": "execute",
+    "requested_mode": "create"
+  }
+}

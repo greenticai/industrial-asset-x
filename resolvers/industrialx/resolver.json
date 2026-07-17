@@ -1,0 +1,5 @@
+{
+  "namespace": "industrialx",
+  "version": "0.1.0",
+  "resolves": ["signal-profile", "data-quality-report", "normal-behaviour-profile", "feature-set", "prediction", "recommendation", "feedback-event", "model-evaluation", "synthetic-scenario", "synthetic-dataset", "training-dataset", "model-candidate", "training-run", "model-selection-report"]
+}

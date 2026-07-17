@@ -1,0 +1,5 @@
+{
+  "namespace": "storex",
+  "version": "0.1.0",
+  "resolves": ["package", "publisher", "license", "component", "playbook-listing", "validation-report", "compatibility-report"]
+}

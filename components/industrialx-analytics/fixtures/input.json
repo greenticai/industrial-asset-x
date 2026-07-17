@@ -1,0 +1,10 @@
+{
+  "observed_temperature_c": 58.0,
+  "ambient_temperature_c": 25.0,
+  "load_fraction": 0.8,
+  "cooling_activity_fraction": 1.0,
+  "no_load_rise_c": 20.0,
+  "load_rise_c": 30.0,
+  "cooling_relief_c": 8.0,
+  "residual_band_c": 4.0
+}

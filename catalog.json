@@ -1,0 +1,8 @@
+{
+  "id": "industrial-asset-x",
+  "name": "Industrial Asset-X Catalog",
+  "description": "Generic Rust/WASM-first Asset-X, Industrial-X, and Store-X catalog foundation for industrial asset health.",
+  "namespaces": ["assetx", "industrialx", "storex"],
+  "rust_wasm_only": true,
+  "customer_specific_content_allowed": false
+}

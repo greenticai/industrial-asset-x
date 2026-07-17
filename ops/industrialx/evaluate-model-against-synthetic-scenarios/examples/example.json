@@ -1,0 +1,19 @@
+{
+  "evidence": [
+    {
+      "confidence": 1.0,
+      "message": "evaluate-model-against-synthetic-scenarios example uses customer-neutral fixture",
+      "source": "synthetic-fixture"
+    }
+  ],
+  "id": "example-evaluate-model-against-synthetic-scenarios",
+  "spec": {
+    "input_contracts": [
+      "assetx.asset",
+      "industrialx.feature-set",
+      "industrialx.prediction"
+    ],
+    "operation": "evaluate-model-against-synthetic-scenarios",
+    "synthetic": true
+  }
+}

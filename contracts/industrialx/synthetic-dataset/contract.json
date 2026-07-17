@@ -1,0 +1,135 @@
+{
+  "example": {
+    "id": "example-synthetic-dataset",
+    "kind": "industrialx.synthetic-dataset",
+    "metadata": {
+      "display_name": "Synthetic Dataset",
+      "synthetic": true
+    },
+    "spec": {
+      "metrics": {},
+      "references": [],
+      "resource_type": "synthetic-dataset",
+      "status": "draft"
+    },
+    "version": "0.1.0"
+  },
+  "lifecycle": [
+    "draft",
+    "validated",
+    "active",
+    "superseded"
+  ],
+  "manifest": {
+    "customer_specific_content_allowed": false,
+    "id": "industrialx.synthetic-dataset",
+    "namespace": "industrialx",
+    "resource": "synthetic-dataset",
+    "rust_wasm_compatible": true,
+    "version": "0.1.0"
+  },
+  "mutation_rules": [
+    "validate schema before promotion",
+    "preserve id and version history",
+    "use synthetic examples only"
+  ],
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "evidence": {
+        "items": {
+          "additionalProperties": false,
+          "properties": {
+            "confidence": {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            "message": {
+              "type": "string"
+            },
+            "source": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "source",
+            "message"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "id": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "kind": {
+        "const": "industrialx.synthetic-dataset"
+      },
+      "metadata": {
+        "additionalProperties": false,
+        "properties": {
+          "display_name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "synthetic": {
+            "const": true
+          }
+        },
+        "required": [
+          "display_name",
+          "synthetic"
+        ],
+        "type": "object"
+      },
+      "spec": {
+        "additionalProperties": false,
+        "properties": {
+          "metrics": {
+            "additionalProperties": {
+              "type": [
+                "number",
+                "integer",
+                "string",
+                "boolean"
+              ]
+            },
+            "type": "object"
+          },
+          "references": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "resource_type": {
+            "const": "synthetic-dataset"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "resource_type",
+          "status"
+        ],
+        "type": "object"
+      },
+      "version": {
+        "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+        "type": "string"
+      }
+    },
+    "required": [
+      "id",
+      "kind",
+      "version",
+      "metadata",
+      "spec"
+    ],
+    "type": "object"
+  }
+}

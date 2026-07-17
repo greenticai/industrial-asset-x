@@ -1,0 +1,255 @@
+{
+  "$schema": "https://greenticai.github.io/greentic-component/schemas/v1/component.manifest.schema.json",
+  "artifacts": {
+    "component_wasm": "target/wasm32-wasip2/release/rule_based_synthetic_generator_wasm.wasm"
+  },
+  "capabilities": {
+    "host": {
+      "secrets": {
+        "required": []
+      },
+      "telemetry": {
+        "scope": "node"
+      }
+    },
+    "wasi": {
+      "clocks": true,
+      "filesystem": {
+        "mode": "none",
+        "mounts": []
+      },
+      "random": true
+    }
+  },
+  "config_schema": {
+    "additionalProperties": false,
+    "properties": {},
+    "required": [],
+    "type": "object"
+  },
+  "default_operation": "generate-synthetic-scenarios",
+  "describe_export": "describe",
+  "dev_flows": {
+    "custom": {
+      "format": "flow-ir-json",
+      "graph": {
+        "description": "Auto-generated custom config for com.example.rule-based-synthetic-generator-wasm",
+        "id": "com.example.rule-based-synthetic-generator-wasm.custom",
+        "kind": "component-config",
+        "nodes": {
+          "ask_config": {
+            "questions": {
+              "fields": [
+                {
+                  "default": "Hello from rule-based-synthetic-generator-wasm!",
+                  "id": "input",
+                  "prompt": "Input:",
+                  "type": "string"
+                }
+              ]
+            },
+            "routing": [
+              {
+                "to": "emit_config"
+              }
+            ]
+          },
+          "emit_config": {
+            "template": "{\n  \"node_id\": \"rule-based-synthetic-generator-wasm\",\n  \"node\": {\n    \"generate-synthetic-scenarios\": {\n      \"input\": {\n        \"input\": \"{{state.input}}\"\n      }\n    },\n    \"routing\": [\n      { \"to\": \"NEXT_NODE_PLACEHOLDER\" }\n    ]\n  }\n}"
+          }
+        }
+      }
+    },
+    "default": {
+      "format": "flow-ir-json",
+      "graph": {
+        "description": "Auto-generated default config for com.example.rule-based-synthetic-generator-wasm",
+        "id": "com.example.rule-based-synthetic-generator-wasm.default",
+        "kind": "component-config",
+        "nodes": {
+          "emit_config": {
+            "template": "{\n  \"node_id\": \"rule-based-synthetic-generator-wasm\",\n  \"node\": {\n    \"generate-synthetic-scenarios\": {\n      \"input\": {\n        \"input\": \"Hello from rule-based-synthetic-generator-wasm!\"\n      }\n    },\n    \"routing\": [\n      { \"to\": \"NEXT_NODE_PLACEHOLDER\" }\n    ]\n  }\n}"
+          }
+        }
+      }
+    }
+  },
+  "hashes": {
+    "component_wasm": "blake3:5a23552b3ac2d7fd3fd52c9c228079f688accc0d7827f675782bde5ba62b36a4"
+  },
+  "id": "com.example.rule-based-synthetic-generator-wasm",
+  "limits": {
+    "memory_mb": 128,
+    "wall_time_ms": 1000
+  },
+  "name": "rule-based-synthetic-generator-wasm",
+  "operations": [
+    {
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "input": {
+            "default": "Hello from rule-based-synthetic-generator-wasm!",
+            "type": "string"
+          }
+        },
+        "required": [
+          "input"
+        ],
+        "title": "rule-based-synthetic-generator-wasm generate-synthetic-scenarios input",
+        "type": "object"
+      },
+      "name": "generate-synthetic-scenarios",
+      "output_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "message"
+        ],
+        "title": "rule-based-synthetic-generator-wasm generate-synthetic-scenarios output",
+        "type": "object"
+      }
+    },
+    {
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "mode": {
+            "enum": [
+              "default",
+              "setup",
+              "install",
+              "update",
+              "upgrade",
+              "remove"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "mode"
+        ],
+        "title": "rule-based-synthetic-generator-wasm qa-spec input",
+        "type": "object"
+      },
+      "name": "qa-spec",
+      "output_schema": {
+        "additionalProperties": true,
+        "properties": {
+          "description_i18n_key": {
+            "type": "string"
+          },
+          "fields": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "mode": {
+            "enum": [
+              "setup",
+              "update",
+              "remove"
+            ],
+            "type": "string"
+          },
+          "title_i18n_key": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "mode",
+          "fields"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": true,
+        "properties": {
+          "answers": {
+            "type": "object"
+          },
+          "current_config": {
+            "type": "object"
+          },
+          "mode": {
+            "type": "string"
+          }
+        },
+        "title": "rule-based-synthetic-generator-wasm apply-answers input",
+        "type": "object"
+      },
+      "name": "apply-answers",
+      "output_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": true,
+        "properties": {
+          "config": {
+            "type": "object"
+          },
+          "errors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "ok": {
+            "type": "boolean"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "ok",
+          "warnings",
+          "errors"
+        ],
+        "title": "rule-based-synthetic-generator-wasm apply-answers output",
+        "type": "object"
+      }
+    },
+    {
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "title": "rule-based-synthetic-generator-wasm i18n-keys input",
+        "type": "object"
+      },
+      "name": "i18n-keys",
+      "output_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "items": {
+          "type": "string"
+        },
+        "title": "rule-based-synthetic-generator-wasm i18n-keys output",
+        "type": "array"
+      }
+    }
+  ],
+  "profiles": {
+    "default": "stateless",
+    "supported": [
+      "stateless"
+    ]
+  },
+  "secret_requirements": [],
+  "supports": [
+    "messaging"
+  ],
+  "version": "0.1.0",
+  "world": "greentic:component/component@0.6.0"
+}

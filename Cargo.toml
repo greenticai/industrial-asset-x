@@ -1,0 +1,94 @@
+[package]
+name = "industrial-asset-x"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Generic Rust/WASM-first industrial asset health catalog foundation."
+repository.workspace = true
+homepage.workspace = true
+readme = "README.md"
+keywords = ["industrial", "assets", "maintenance", "wasm"]
+categories = ["command-line-utilities"]
+include = [
+    "/Cargo.toml",
+    "/Cargo.lock",
+    "/LICENSE",
+    "/README.md",
+    "/catalog.json",
+    "/src/**",
+    "/benches/**",
+    "/tests/**",
+    "/contracts/**",
+    "/ops/**",
+    "/flows/**",
+    "/views/**",
+    "/playbooks/**",
+    "/component_abi/**",
+    "/components/**",
+    "/crates/**",
+    "/store/**",
+    "/docs/**",
+    "/resolvers/**",
+    "/scripts/**",
+]
+
+[workspace]
+members = [
+    ".",
+    "crates/industrialx-core",
+    "crates/industrialx-timeseries",
+    "crates/industrialx-features",
+    "crates/industrialx-baseline-models",
+    "crates/industrialx-wasm-abi",
+    "crates/industrialx-synthetic",
+    "components/generic-signal-profiler-wasm",
+    "components/generic-data-quality-checker-wasm",
+    "components/generic-feature-extractor-wasm",
+    "components/generic-health-scorer-wasm",
+    "components/rule-based-synthetic-generator-wasm",
+    "components/industrialx-analytics",
+]
+resolver = "3"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.95"
+license = "MIT"
+repository = "https://github.com/greenticai/industrial-asset-x"
+homepage = "https://github.com/greenticai/industrial-asset-x"
+
+[workspace.dependencies]
+criterion = "0.8"
+serde_json = "1"
+serde = { version = "1", features = ["derive"] }
+greentic-interfaces-guest = { version = ">=1.1, <1.2.0-0", default-features = false, features = ["component-v0-6"] }
+greentic-types = { version = ">=1.1, <1.2.0-0" }
+industrialx-baseline-models = { version = "0.1.0", path = "crates/industrialx-baseline-models" }
+industrialx-core = { version = "0.1.0", path = "crates/industrialx-core" }
+industrialx-features = { version = "0.1.0", path = "crates/industrialx-features" }
+industrialx-synthetic = { version = "0.1.0", path = "crates/industrialx-synthetic" }
+industrialx-timeseries = { version = "0.1.0", path = "crates/industrialx-timeseries" }
+industrialx-wasm-abi = { version = "0.1.0", path = "crates/industrialx-wasm-abi" }
+generic-data-quality-checker-wasm = { path = "components/generic-data-quality-checker-wasm" }
+generic-feature-extractor-wasm = { path = "components/generic-feature-extractor-wasm" }
+generic-health-scorer-wasm = { path = "components/generic-health-scorer-wasm" }
+generic-signal-profiler-wasm = { path = "components/generic-signal-profiler-wasm" }
+industrialx-analytics = { path = "components/industrialx-analytics" }
+rule-based-synthetic-generator-wasm = { path = "components/rule-based-synthetic-generator-wasm" }
+
+[dependencies]
+serde_json.workspace = true
+
+[dev-dependencies]
+criterion.workspace = true
+generic-data-quality-checker-wasm.workspace = true
+generic-feature-extractor-wasm.workspace = true
+generic-health-scorer-wasm.workspace = true
+generic-signal-profiler-wasm.workspace = true
+rule-based-synthetic-generator-wasm.workspace = true
+
+[[bench]]
+name = "perf"
+harness = false

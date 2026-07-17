@@ -1,0 +1,8 @@
+{
+  "id": "compat-substation-transformer-health-basic",
+  "kind": "storex.compatibility-report",
+  "version": "0.1.0",
+  "compatible_with": [
+    "industrial-asset-x 0.1.0"
+  ]
+}

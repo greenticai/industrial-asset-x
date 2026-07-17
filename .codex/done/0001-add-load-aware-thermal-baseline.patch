@@ -1,0 +1,104 @@
+--- a/crates/industrialx-baseline-models/src/lib.rs
++++ b/crates/industrialx-baseline-models/src/lib.rs
+@@ -19,6 +19,57 @@
+     pub risk_level: RiskLevel,
+ }
+ 
++#[derive(Debug, Clone, Copy, PartialEq)]
++pub struct ThermalBaseline {
++    pub no_load_rise_c: f64,
++    pub load_rise_c: f64,
++    pub cooling_relief_c: f64,
++    pub residual_band_c: f64,
++}
++
++#[derive(Debug, Clone, PartialEq)]
++pub struct ThermalAssessment {
++    pub expected_temperature_c: f64,
++    pub thermal_residual_c: f64,
++    pub health: HealthAssessment,
++}
++
++impl ThermalBaseline {
++    #[must_use]
++    pub fn expected_temperature(
++        &self,
++        ambient_temperature_c: f64,
++        load_fraction: f64,
++        cooling_fraction: f64,
++    ) -> f64 {
++        let load = load_fraction.clamp(0.0, 1.0);
++        let cooling = cooling_fraction.clamp(0.0, 1.0);
++        ambient_temperature_c + self.no_load_rise_c + self.load_rise_c * load.powi(2)
++            - self.cooling_relief_c * cooling
++    }
++
++    #[must_use]
++    pub fn assess(
++        &self,
++        observed_temperature_c: f64,
++        ambient_temperature_c: f64,
++        load_fraction: f64,
++        cooling_fraction: f64,
++    ) -> ThermalAssessment {
++        let expected =
++            self.expected_temperature(ambient_temperature_c, load_fraction, cooling_fraction);
++        let band = ControlBand {
++            lower: expected - self.residual_band_c.abs(),
++            upper: expected + self.residual_band_c.abs(),
++        };
++        ThermalAssessment {
++            expected_temperature_c: expected,
++            thermal_residual_c: observed_temperature_c - expected,
++            health: assess_health(observed_temperature_c, band),
++        }
++    }
++}
++
+ impl ControlBand {
+     pub fn residual(&self, value: f64) -> f64 {
+         if value < self.lower {
+@@ -87,4 +138,43 @@
+         assert_eq!(assessment.risk_level, RiskLevel::Medium);
+         assert_eq!(assessment.residual, 5.0);
+     }
++
++    fn thermal_baseline() -> ThermalBaseline {
++        ThermalBaseline {
++            no_load_rise_c: 20.0,
++            load_rise_c: 30.0,
++            cooling_relief_c: 8.0,
++            residual_band_c: 4.0,
++        }
++    }
++
++    #[test]
++    fn derives_expected_temperature_from_operating_conditions() {
++        let expected = thermal_baseline().expected_temperature(25.0, 0.8, 1.0);
++        assert!((expected - 56.2).abs() < 0.000_001);
++    }
++
++    #[test]
++    fn assesses_cooling_degradation_with_evidence() {
++        let assessment = thermal_baseline().assess(65.0, 25.0, 0.8, 1.0);
++        assert!((assessment.expected_temperature_c - 56.2).abs() < 0.000_001);
++        assert!((assessment.thermal_residual_c - 8.8).abs() < 0.000_001);
++        assert_eq!(assessment.health.risk_level, RiskLevel::High);
++    }
++
++    #[test]
++    fn keeps_normal_operation_low_risk() {
++        let assessment = thermal_baseline().assess(58.0, 25.0, 0.8, 1.0);
++        assert_eq!(assessment.health.health_score, 100);
++        assert_eq!(assessment.health.risk_level, RiskLevel::Low);
++    }
++
++    #[test]
++    fn clamps_normalized_load_and_cooling_inputs() {
++        let baseline = thermal_baseline();
++        assert_eq!(
++            baseline.expected_temperature(25.0, 2.0, -1.0),
++            baseline.expected_temperature(25.0, 1.0, 0.0)
++        );
++    }
+ }

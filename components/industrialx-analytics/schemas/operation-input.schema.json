@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://greentic.ai/schemas/industrialx/analytics-input/0.1.0",
+  "type": "object",
+  "properties": {
+    "values": { "type": "array", "items": { "type": "number" }, "maxItems": 10000 },
+    "window": { "type": "integer", "minimum": 0, "maximum": 10000 },
+    "samples": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "type": "object",
+        "properties": {
+          "timestamp_ms": { "type": "integer" },
+          "value": { "type": ["number", "null"] },
+          "quality": { "enum": ["good", "missing", "bad", "estimated"] }
+        },
+        "required": ["timestamp_ms", "value", "quality"],
+        "additionalProperties": false
+      }
+    },
+    "observed_temperature_c": { "type": "number" },
+    "ambient_temperature_c": { "type": "number" },
+    "load_fraction": { "type": "number" },
+    "cooling_activity_fraction": { "type": "number" },
+    "no_load_rise_c": { "type": "number" },
+    "load_rise_c": { "type": "number" },
+    "cooling_relief_c": { "type": "number" },
+    "residual_band_c": { "type": "number" },
+    "value": { "type": "number" },
+    "lower": { "type": "number" },
+    "upper": { "type": "number" },
+    "prior_evidence": { "type": "array", "items": { "type": "object" }, "maxItems": 100 }
+  },
+  "additionalProperties": false
+}

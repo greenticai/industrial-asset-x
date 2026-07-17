@@ -1,0 +1,27 @@
+{
+  "component": "rule-based-synthetic-generator-wasm",
+  "deterministic_default": true,
+  "examples": [
+    "examples/example.json"
+  ],
+  "failure_modes": [
+    "invalid-input",
+    "component-error",
+    "contract-mismatch"
+  ],
+  "id": "industrialx.generate-synthetic-scenarios",
+  "input_schema": "input.schema.json",
+  "output_contract": "industrialx.synthetic-dataset",
+  "output_schema": "output.schema.json",
+  "permissions": {
+    "filesystem": "read-fixtures-only",
+    "network": false,
+    "writes": false
+  },
+  "supported_contracts": [
+    "assetx.asset",
+    "industrialx.feature-set",
+    "industrialx.prediction"
+  ],
+  "version": "0.1.0"
+}

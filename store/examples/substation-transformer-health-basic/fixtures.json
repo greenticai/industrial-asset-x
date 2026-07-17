@@ -1,0 +1,38 @@
+{
+  "cases": [
+    {
+      "expected_risk": "low",
+      "id": "healthy",
+      "samples": [
+        {
+          "cooling_fan_status": 1,
+          "load": 0.75,
+          "oil_temperature": 55.0
+        }
+      ]
+    },
+    {
+      "expected_risk": "high",
+      "id": "cooling_degraded",
+      "samples": [
+        {
+          "cooling_fan_status": 0,
+          "load": 0.6,
+          "oil_temperature": 82.0
+        }
+      ]
+    },
+    {
+      "expected_risk": "medium",
+      "id": "sensor_flatline",
+      "samples": [
+        {
+          "cooling_fan_status": 1,
+          "load": 0.75,
+          "oil_temperature": 42.0
+        }
+      ]
+    }
+  ],
+  "synthetic": true
+}
