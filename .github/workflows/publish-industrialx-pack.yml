@@ -7,8 +7,6 @@ on:
 
 permissions:
   contents: write
-  packages: write
-  id-token: write
 
 jobs:
   build:
@@ -20,17 +18,18 @@ jobs:
           targets: wasm32-wasip2
       - uses: taiki-e/install-action@v2
         with:
-          tool: cargo-component
-      - name: Install Greentic tooling
-        run: cargo install greentic-component greentic-flow greentic-pack --locked
+          tool: cargo-component,greentic-component,greentic-flow,greentic-pack
       - name: Build and validate immutable pack
         run: bash scripts/build-industrialx-pack.sh
-      - name: Upload provenance-bearing artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: industrialx-operations-${{ github.ref_name }}
-          path: |
-            packs/industrialx-operations/*.gtpack
-            packs/industrialx-operations/pack.lock.cbor
-            packs/industrialx-operations/provenance.json
-          if-no-files-found: error
+      - name: Create checksums
+        run: sha256sum packs/industrialx-operations/dist/*.gtpack > packs/industrialx-operations/dist/SHA256SUMS
+      - name: Create GitHub Release and upload pack
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "${{ github.ref_name }}" >/dev/null 2>&1 || \
+            gh release create "${{ github.ref_name }}" --verify-tag --generate-notes
+          gh release upload "${{ github.ref_name }}" \
+            packs/industrialx-operations/dist/* \
+            packs/industrialx-operations/provenance.json \
+            --clobber

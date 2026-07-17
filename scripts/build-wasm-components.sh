@@ -10,6 +10,12 @@ if ! command -v cargo-component >/dev/null 2>&1; then
   exit 1
 fi
 
+if ! command -v greentic-component >/dev/null 2>&1; then
+  echo "greentic-component is required for WASM component validation" >&2
+  echo "install a released binary with: cargo binstall greentic-component" >&2
+  exit 1
+fi
+
 if ! rustup target list --installed | grep -q '^wasm32-wasip2$'; then
   echo "wasm32-wasip2 target is required for WASM component validation" >&2
   echo "install it with: rustup target add wasm32-wasip2" >&2

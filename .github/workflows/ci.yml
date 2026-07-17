@@ -44,7 +44,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - uses: taiki-e/install-action@v2
         with:
-          tool: cargo-component
+          tool: cargo-component,greentic-component
       - run: bash scripts/build-wasm-components.sh
 
   package-dry-run:
