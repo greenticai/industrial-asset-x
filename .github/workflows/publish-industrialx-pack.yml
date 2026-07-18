@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  packages: write
 
 jobs:
   build:
@@ -23,6 +24,34 @@ jobs:
         run: bash scripts/build-industrialx-pack.sh
       - name: Create checksums
         run: sha256sum packs/industrialx-operations/dist/*.gtpack > packs/industrialx-operations/dist/SHA256SUMS
+      - name: Install ORAS
+        uses: oras-project/setup-oras@v1
+      - name: Publish pack to GHCR
+        env:
+          GHCR_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          version="${GITHUB_REF_NAME#industrialx-pack-v}"
+          owner="${GITHUB_REPOSITORY_OWNER,,}"
+          target="ghcr.io/${owner}/industrialx-operations"
+          artifact="packs/industrialx-operations/dist/industrialx-operations.gtpack"
+          created="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+
+          printf '%s' "$GHCR_TOKEN" | oras login ghcr.io \
+            --username "$GITHUB_ACTOR" \
+            --password-stdin
+
+          oras push "${target}:${version}" \
+            --artifact-type application/vnd.greentic.gtpack.v1 \
+            --annotation "org.opencontainers.image.created=${created}" \
+            --annotation "org.opencontainers.image.revision=${GITHUB_SHA}" \
+            --annotation "org.opencontainers.image.source=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" \
+            --annotation "org.opencontainers.image.title=industrialx-operations.gtpack" \
+            --annotation "org.opencontainers.image.version=${version}" \
+            "${artifact}:application/octet-stream"
+
+          oras tag "${target}:${version}" release latest
+          oras manifest fetch "${target}:${version}" >/dev/null
       - name: Create GitHub Release and upload pack
         env:
           GH_TOKEN: ${{ github.token }}
