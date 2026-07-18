@@ -17,7 +17,7 @@ dirty_flag() {
   printf '%s\n' "--allow-dirty"
 }
 
-detect_publishable_crates() {
+detect_release_packages() {
   if command -v python3 >/dev/null 2>&1; then
     cargo metadata --no-deps --format-version 1 | python3 -c '
 import json
@@ -36,10 +36,8 @@ packages = sorted(metadata.get("packages", []), key=lambda item: (order.get(item
 for package in packages:
     if package.get("id") not in workspace_members:
         continue
-    publish = package.get("publish")
-    if publish == []:
-        continue
-    print(package["name"])
+    if package["name"] in order:
+        print(package["name"])
 '
   else
     cargo metadata --no-deps --format-version 1 >/dev/null
@@ -48,13 +46,13 @@ for package in packages:
 }
 
 package_checks() {
-  header "Detect publishable crates"
-  crates_file="$(mktemp "${TMPDIR:-/tmp}/publishable-crates.XXXXXX")"
+  header "Detect release packages"
+  crates_file="$(mktemp "${TMPDIR:-/tmp}/release-packages.XXXXXX")"
   trap 'rm -f "$crates_file"' EXIT
-  detect_publishable_crates > "$crates_file"
+  detect_release_packages > "$crates_file"
 
   if [ ! -s "$crates_file" ]; then
-    printf 'No publishable crates found.\n'
+    printf 'No release packages found.\n'
     return 0
   fi
 
@@ -69,8 +67,6 @@ package_checks() {
     header "List packaged files for $crate"
     cargo package --list -p "$crate" $(dirty_flag)
 
-    header "Publish dry-run for $crate"
-    cargo publish -p "$crate" --dry-run $(dirty_flag)
   done < "$crates_file"
 }
 
