@@ -2,8 +2,22 @@ name: Publish Industrial-X Pack
 
 on:
   push:
+    branches:
+      - main
     tags:
       - industrialx-pack-v*
+    paths:
+      - .github/workflows/publish-industrialx-pack.yml
+      - Cargo.lock
+      - Cargo.toml
+      - components/**
+      - crates/**
+      - packs/industrialx-operations/**
+      - scripts/build-industrialx-pack.sh
+
+concurrency:
+  group: publish-industrialx-pack
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -20,7 +34,7 @@ jobs:
       - uses: taiki-e/install-action@v2
         with:
           tool: cargo-component,greentic-component,greentic-flow,greentic-pack
-      - name: Build and validate immutable pack
+      - name: Build and validate pack
         run: bash scripts/build-industrialx-pack.sh
       - name: Create checksums
         run: sha256sum packs/industrialx-operations/dist/*.gtpack > packs/industrialx-operations/dist/SHA256SUMS
@@ -31,17 +45,25 @@ jobs:
           GHCR_TOKEN: ${{ github.token }}
         shell: bash
         run: |
-          version="${GITHUB_REF_NAME#industrialx-pack-v}"
           owner="${GITHUB_REPOSITORY_OWNER,,}"
           target="ghcr.io/${owner}/industrialx-operations"
           artifact="packs/industrialx-operations/dist/industrialx-operations.gtpack"
           created="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          short_sha="${GITHUB_SHA:0:12}"
+
+          if [ "$GITHUB_REF_TYPE" = "tag" ]; then
+            version="${GITHUB_REF_NAME#industrialx-pack-v}"
+            primary_tag="$version"
+          else
+            version="sha-${short_sha}"
+            primary_tag="$version"
+          fi
 
           printf '%s' "$GHCR_TOKEN" | oras login ghcr.io \
             --username "$GITHUB_ACTOR" \
             --password-stdin
 
-          oras push "${target}:${version}" \
+          oras push "${target}:${primary_tag}" \
             --artifact-type application/vnd.greentic.gtpack.v1 \
             --annotation "org.opencontainers.image.created=${created}" \
             --annotation "org.opencontainers.image.revision=${GITHUB_SHA}" \
@@ -50,9 +72,14 @@ jobs:
             --annotation "org.opencontainers.image.version=${version}" \
             "${artifact}:application/octet-stream"
 
-          oras tag "${target}:${version}" release latest
-          oras manifest fetch "${target}:${version}" >/dev/null
+          if [ "$GITHUB_REF_TYPE" = "tag" ]; then
+            oras tag "${target}:${primary_tag}" release latest
+          else
+            oras tag "${target}:${primary_tag}" latest
+          fi
+          oras manifest fetch "${target}:${primary_tag}" >/dev/null
       - name: Create GitHub Release and upload pack
+        if: github.ref_type == 'tag'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |

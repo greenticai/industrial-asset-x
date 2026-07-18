@@ -15,10 +15,11 @@ artifact. Inputs and outputs follow the schemas under the component and operatio
 directories. Operations are deterministic, bounded to 10,000 samples, 128 MiB, and a
 two-second host timeout.
 
-Tags matching `industrialx-pack-v*` publish the generated pack both as a GitHub
-Release asset and as an OCI artifact at
-`ghcr.io/greentic-biz/industrialx-operations`. GHCR receives an immutable semantic
-version tag plus the moving `release` and `latest` tags. For example:
+Relevant pushes to `main` automatically publish the generated pack as an OCI artifact
+at `ghcr.io/greentic-biz/industrialx-operations`, tagged with `sha-<commit>` and the
+moving `latest` tag. Tags matching `industrialx-pack-v*` additionally publish an
+immutable semantic version, move the `release` tag, and attach the checksummed pack to
+a GitHub Release. For example:
 
 ```sh
 oras pull ghcr.io/greentic-biz/industrialx-operations:0.1.0
