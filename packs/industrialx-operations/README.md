@@ -15,6 +15,17 @@ artifact. Inputs and outputs follow the schemas under the component and operatio
 directories. Operations are deterministic, bounded to 10,000 samples, 128 MiB, and a
 two-second host timeout.
 
+Relevant pushes to `main` automatically publish the generated pack as an OCI artifact
+at `ghcr.io/greentic-biz/industrialx-operations`, tagged with `sha-<commit>` and the
+moving `latest` tag. Tags matching `industrialx-pack-v*` additionally publish an
+immutable semantic version, move the `release` tag, and attach the checksummed pack to
+a GitHub Release. For example:
+
+```sh
+oras pull ghcr.io/greentic-biz/industrialx-operations:0.1.0
+oras pull ghcr.io/greentic-biz/industrialx-operations:latest
+```
+
 Pack and component versions follow Semantic Versioning. Schema, WIT world, operation
 name, equation, error diagnostic, or evidence-contract changes require compatibility
 review. Consumers should pin the released pack digest as well as version.
