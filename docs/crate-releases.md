@@ -8,14 +8,15 @@ version:
 - `industrialx-features` for feature and residual generation;
 - `industrialx-baseline-models` for control-band and thermal assessment.
 
-Downstream applications use crates.io dependencies and do not require this repository:
+The crates are distributed from coordinated GitHub Releases rather than crates.io.
+Downstream Cargo projects can pin the release tag directly:
 
 ```toml
 [dependencies]
-industrialx-core = "0.1.0"
-industrialx-timeseries = "0.1.0"
-industrialx-features = "0.1.0"
-industrialx-baseline-models = "0.1.0"
+industrialx-core = { git = "https://github.com/greentic-biz/industrial-asset-x", tag = "v0.1.0" }
+industrialx-timeseries = { git = "https://github.com/greentic-biz/industrial-asset-x", tag = "v0.1.0" }
+industrialx-features = { git = "https://github.com/greentic-biz/industrial-asset-x", tag = "v0.1.0" }
+industrialx-baseline-models = { git = "https://github.com/greentic-biz/industrial-asset-x", tag = "v0.1.0" }
 ```
 
 All four crates require Rust 1.95 or newer. They are deterministic libraries with no
@@ -33,9 +34,9 @@ The Greentic maintainers own these crates. Support and security reports use the
 repository issue tracker. Each crate includes its own README and changelog, and the
 repository release tag is the authoritative source for a coordinated version.
 
-## Release order and partial releases
+## Release contents
 
-Publish in this order:
+The release workflow packages in this stable order:
 
 1. `industrialx-timeseries`
 2. `industrialx-core`
@@ -43,9 +44,8 @@ Publish in this order:
 4. `industrialx-features`
 5. `industrial-asset-x`
 
-The public crates deliberately have no registry dependencies on one another, allowing
-all artifacts to be verified before the first publication. The release workflow still
-uses the stable order above and waits for each published crate to become resolvable
-before continuing. If publication stops partway, already published immutable versions
-are not overwritten; fix the failure and rerun the same tagged release, which skips
-versions already present.
+The libraries deliberately have no dependencies on one another. CI builds each
+`.crate` archive offline, verifies its contents, creates SHA-256 checksums, and uploads
+the immutable artifacts to the matching GitHub Release. Cargo metadata sets
+`publish = false`, so neither CI nor a local `cargo publish` can upload these packages
+to crates.io.

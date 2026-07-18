@@ -1,5 +1,6 @@
 [package]
 name = "industrial-asset-x"
+publish = false
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -56,8 +57,8 @@ version = "0.1.0"
 edition = "2024"
 rust-version = "1.95"
 license = "MIT"
-repository = "https://github.com/greenticai/industrial-asset-x"
-homepage = "https://github.com/greenticai/industrial-asset-x"
+repository = "https://github.com/greentic-biz/industrial-asset-x"
+homepage = "https://github.com/greentic-biz/industrial-asset-x"
 
 [workspace.dependencies]
 criterion = "0.8"

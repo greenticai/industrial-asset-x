@@ -36,7 +36,8 @@ Run the same checks locally that CI runs:
 bash ci/local_check.sh
 ```
 
-The local check runs formatting, clippy, tests, build, documentation, package validation, and crates.io dry-run publishing checks for publishable crates.
+The local check runs formatting, clippy, tests, build, documentation, and offline
+package-archive validation. It does not publish to crates.io.
 
 It also builds all reusable component packages with:
 
@@ -53,11 +54,10 @@ Releases are driven by the version in `Cargo.toml`:
 1. Bump `version` in `Cargo.toml`.
 2. Commit the change.
 3. Create and push a matching tag, for example `v0.1.0`.
-4. The `publish.yml` workflow verifies that the tag matches the Cargo version, runs `ci/local_check.sh`, performs another publish dry-run, publishes to crates.io, and creates a GitHub Release.
-
-Required secret:
-
-- `CARGO_REGISTRY_TOKEN` for crates.io publishing.
+4. The `publish.yml` workflow verifies that the tag matches the Cargo version, runs
+   `ci/local_check.sh`, builds checksummed `.crate` archives, and attaches them to a
+   GitHub Release. The packages declare `publish = false` as an additional guard
+   against accidental registry publication.
 
 ## Versioning
 

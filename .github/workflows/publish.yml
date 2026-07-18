@@ -50,7 +50,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
-      - name: Validate package archives without publishing
+      - name: Build and validate package archives
         run: bash ci/local_check.sh package-only
       - name: Collect crate archives
         shell: bash
