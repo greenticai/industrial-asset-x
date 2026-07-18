@@ -48,7 +48,7 @@ jobs:
       - run: bash scripts/build-wasm-components.sh
 
   package-dry-run:
-    name: Package Dry Run
+    name: Package Archives
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

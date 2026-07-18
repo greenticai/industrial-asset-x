@@ -36,7 +36,7 @@ Run the same checks locally that CI runs:
 bash ci/local_check.sh
 ```
 
-The local check runs formatting, clippy, tests, build, documentation, and offline
+The local check runs formatting, clippy, tests, build, documentation, and
 package-archive validation. It does not publish to crates.io.
 
 It also builds all reusable component packages with:

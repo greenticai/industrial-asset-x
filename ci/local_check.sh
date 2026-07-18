@@ -59,13 +59,13 @@ package_checks() {
   while IFS= read -r crate; do
     [ -n "$crate" ] || continue
     header "Package $crate without verification"
-    cargo package --offline --no-verify -p "$crate" $(dirty_flag)
+    cargo package --no-verify -p "$crate" $(dirty_flag)
 
     header "Package $crate with verification"
-    cargo package --offline -p "$crate" $(dirty_flag)
+    cargo package -p "$crate" $(dirty_flag)
 
     header "List packaged files for $crate"
-    cargo package --offline --list -p "$crate" $(dirty_flag)
+    cargo package --list -p "$crate" $(dirty_flag)
 
   done < "$crates_file"
 }

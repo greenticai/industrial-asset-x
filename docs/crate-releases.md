@@ -45,7 +45,7 @@ The release workflow packages in this stable order:
 5. `industrial-asset-x`
 
 The libraries deliberately have no dependencies on one another. CI builds each
-`.crate` archive offline, verifies its contents, creates SHA-256 checksums, and uploads
+`.crate` archive, verifies its contents, creates SHA-256 checksums, and uploads
 the immutable artifacts to the matching GitHub Release. Cargo metadata sets
 `publish = false`, so neither CI nor a local `cargo publish` can upload these packages
 to crates.io.
