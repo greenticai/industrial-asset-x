@@ -19,7 +19,16 @@ pub const FORBIDDEN_PHRASES: &[&str] = &[
     "open breaker",
     "close breaker",
     "command",
+    "shut down",
+    "shutdown",
+    "energize",
+    "switch off",
+    "turn off",
 ];
+
+/// Filler words skipped before matching, so `close the breaker` is caught by
+/// `close breaker` just like `close breaker 4`.
+const ARTICLES: &[&str] = &["the", "a", "an", "all", "that", "this"];
 
 fn words(text: &str) -> Vec<String> {
     text.to_lowercase()
@@ -31,7 +40,10 @@ fn words(text: &str) -> Vec<String> {
 
 /// Returns the first forbidden phrase found in `action`, if any.
 pub fn command_phrase(action: &str) -> Option<&'static str> {
-    let action_words = words(action);
+    let action_words: Vec<String> = words(action)
+        .into_iter()
+        .filter(|w| !ARTICLES.contains(&w.as_str()))
+        .collect();
     FORBIDDEN_PHRASES.iter().copied().find(|phrase| {
         let needle = words(phrase);
         action_words
@@ -68,6 +80,12 @@ mod tests {
             ("Open Breaker 4", "open breaker"),
             ("close  breaker 4", "close breaker"),
             ("send command to SCADA", "command"),
+            ("close the breaker", "close breaker"),
+            ("Open all the breaker", "open breaker"),
+            ("automatically shut down the transformer", "shut down"),
+            ("Shutdown unit 2", "shutdown"),
+            ("de-energize the feeder", "energize"),
+            ("turn off the cooling fan", "turn off"),
         ] {
             assert_eq!(command_phrase(action), Some(phrase), "{action}");
         }
