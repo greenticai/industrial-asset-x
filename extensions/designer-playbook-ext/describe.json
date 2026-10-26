@@ -1,0 +1,97 @@
+{
+  "$schema": "https://store.greentic.cloud/schemas/describe-v2.json",
+  "apiVersion": "greentic.ai/v2",
+  "kind": "DesignExtension",
+  "compat": {
+    "min_designer_version": ">=1.1.0",
+    "min_runner_version": "^1.2.0",
+    "contract_version": "1.2.0"
+  },
+  "metadata": {
+    "id": "greentic.industrial-x-designer",
+    "name": "Industrial-X Designer",
+    "version": "0.1.0",
+    "summary": "Authoring tools for Industrial-X playbooks in Greentic Designer.",
+    "description": "Design extension exposing agentic-worker tools that list Industrial-X authoring primitives, generate starter playbook JSON, and validate a playbook against the dialect schema, reference checks and the advisory-only rule.",
+    "author": {
+      "name": "Greentic",
+      "email": "team@greentic.ai"
+    },
+    "license": "MIT",
+    "repository": "https://github.com/greentic-biz/industrial-asset-x",
+    "keywords": [
+      "industrial-x",
+      "playbook",
+      "designer",
+      "authoring",
+      "agentic-worker",
+      "design-extension"
+    ]
+  },
+  "capabilities": {
+    "offered": [
+      {
+        "id": "greentic:industrial-x-designer/playbook-authoring",
+        "version": "0.1.0"
+      }
+    ],
+    "required": []
+  },
+  "runtime": {
+    "memoryLimitMB": 64,
+    "permissions": {
+      "network": [],
+      "secrets": [],
+      "callExtensionKinds": []
+    },
+    "components": {
+      "industrial-x-designer": {
+        "gtpack": {
+          "file": "extension.wasm",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "pack_id": "greentic.industrial-x-designer",
+          "component_version": "0.1.0"
+        },
+        "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "world": "greentic:industrial-x-designer-extension/design-extension@1.0.0"
+      }
+    }
+  },
+  "contributions": {
+    "tools": [
+      {
+        "name": "ix_list_authoring_catalog",
+        "export": "greentic:extension-design/tools.invoke-tool",
+        "runtime_ref": "industrial-x-designer",
+        "capabilities": [
+          "agentic_worker",
+          "cap://dialect/industrial-x/playbook-authoring"
+        ],
+        "description": "List the playbooks, sensor names, failure modes and WASM components packaged with Industrial-X.",
+        "input_schema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"category\": {\n      \"type\": \"string\",\n      \"description\": \"Optional category filter: playbooks, sensors, failure_modes, components\"\n    }\n  }\n}"
+      },
+      {
+        "name": "ix_generate_playbook",
+        "export": "greentic:extension-design/tools.invoke-tool",
+        "runtime_ref": "industrial-x-designer",
+        "capabilities": [
+          "agentic_worker",
+          "cap://dialect/industrial-x/playbook-authoring"
+        ],
+        "description": "Generate a starter Industrial-X playbook (JSON) from an objective. Placeholders only; no tags or thresholds are invented.",
+        "input_schema": "{\n  \"type\": \"object\",\n  \"required\": [\"objective\"],\n  \"properties\": {\n    \"objective\": {\n      \"type\": \"string\",\n      \"description\": \"User-facing goal for the playbook, e.g. monitor transformer cooling health\"\n    },\n    \"asset_type\": {\n      \"type\": \"string\",\n      \"description\": \"Optional asset type, e.g. substation transformer\"\n    }\n  }\n}"
+      },
+      {
+        "name": "ix_validate_playbook",
+        "export": "greentic:extension-design/tools.invoke-tool",
+        "runtime_ref": "industrial-x-designer",
+        "capabilities": [
+          "agentic_worker",
+          "cap://dialect/industrial-x/playbook-authoring"
+        ],
+        "description": "Validate an Industrial-X playbook JSON: JSON Schema, reference checks and the advisory-only rule.",
+        "input_schema": "{\n  \"type\": \"object\",\n  \"required\": [\"json\"],\n  \"properties\": {\n    \"json\": {\n      \"type\": \"string\",\n      \"description\": \"Industrial-X playbook.json document to validate\"\n    }\n  }\n}"
+      }
+    ]
+  }
+}
