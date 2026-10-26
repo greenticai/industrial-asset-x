@@ -33,6 +33,13 @@ WASM_SHA256="$(shasum -a 256 "$STAGE/extension.wasm" | cut -d' ' -f1)"
 sed "s/0000000000000000000000000000000000000000000000000000000000000000/${WASM_SHA256}/g"   "$STAGE/describe.json" > "$STAGE/describe.json.tmp"
 mv "$STAGE/describe.json.tmp" "$STAGE/describe.json"
 
+# manifest.json: per-file sha256 + size, the shape `gtdx publish` writes
+# (schema greentic.gtxpack.manifest/v1). Hosts verify entries against it on
+# install. It must be written last, after every other staged file is final.
+(cd "$STAGE" && for f in $(find . -type f ! -name manifest.json | sed 's|^\./||' | LC_ALL=C sort); do
+  printf '%s\t%s\t%s\n' "$f" "$(shasum -a 256 "$f" | cut -d' ' -f1)" "$(wc -c < "$f" | tr -d ' ')"
+done) | jq -R -s -c '{entries: (split("\n") | map(select(length>0) | split("\t") | {path: .[0], sha256: .[1], size: (.[2]|tonumber)})), schema: "greentic.gtxpack.manifest/v1"}' > "$STAGE/manifest.json"
+
 EXT_ID="$(jq -r .metadata.id "$STAGE/describe.json")"
 EXT_VERSION="$(jq -r .metadata.version "$STAGE/describe.json")"
 OUT="$HERE/${EXT_ID}-${EXT_VERSION}.gtxpack"
