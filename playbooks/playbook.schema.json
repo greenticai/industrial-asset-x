@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "industrial-x://playbooks/playbook.schema.json",
+  "title": "Industrial-X Playbook",
+  "description": "A maintenance playbook is a data document. It names the asset template, the signals it needs, the features and scoring that read them, and the recommendations an engineer reviews. It never carries a command: a recommendation is advice and requires evidence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "asset_template",
+    "sensor_requirements",
+    "failure_modes",
+    "recommendation_rules"
+  ],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?$" },
+    "synthetic_demo_safe": { "type": "boolean" },
+    "asset_template": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "components"],
+      "properties": {
+        "type": { "type": "string", "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$" },
+        "components": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$" }
+        }
+      }
+    },
+    "components": {
+      "description": "Physical asset components this playbook covers, as written in the playbook. Not the WASM components of the package.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" }
+    },
+    "sensor_requirements": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "required", "unit"],
+        "properties": {
+          "name": { "type": "string", "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$" },
+          "required": { "type": "boolean" },
+          "unit": { "type": "string", "enum": ["numeric", "status"] },
+          "expected_frequency": { "type": "string", "pattern": "^[1-9][0-9]*(s|m|h|d)$" },
+          "minimum_coverage": { "type": "number", "minimum": 0, "maximum": 1 }
+        }
+      }
+    },
+    "failure_modes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "features": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$" }
+    },
+    "feature_definitions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "implementation"],
+        "properties": {
+          "name": { "type": "string", "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$" },
+          "implementation": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "baseline_scoring": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "risk_levels"],
+      "properties": {
+        "method": { "type": "string", "minLength": 1 },
+        "evidence_mapping": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "risk_levels": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["level", "min_score"],
+            "properties": {
+              "level": { "$ref": "#/$defs/risk_level" },
+              "min_score": { "type": "number", "minimum": 0, "maximum": 100 }
+            }
+          }
+        }
+      }
+    },
+    "recommendation_rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "action", "evidence_required", "when"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+          "action": { "type": "string", "minLength": 1 },
+          "evidence_required": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "when": {
+            "type": "object",
+            "additionalProperties": false,
+            "minProperties": 1,
+            "properties": {
+              "failure_mode": { "type": "string", "minLength": 1 },
+              "risk_level": { "$ref": "#/$defs/risk_level" }
+            }
+          }
+        }
+      }
+    },
+    "feedback_questions": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+  },
+  "$defs": {
+    "risk_level": { "type": "string", "enum": ["low", "medium", "high"] }
+  }
+}
