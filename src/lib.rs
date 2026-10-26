@@ -3,6 +3,8 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
 use std::path::{Path, PathBuf};
 
+mod playbook_refs;
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Diagnostic {
     pub code: &'static str,
@@ -384,12 +386,20 @@ fn validate_views(root: &Path) -> ValidationReport {
 }
 
 fn validate_playbooks(root: &Path) -> ValidationReport {
-    validate_named_json_collection(
+    let mut report = validate_named_json_collection(
         root,
         "playbooks",
         "playbook.json",
         &["id", "version", "sensor_requirements", "failure_modes"],
-    )
+    );
+    let mut diagnostics = Vec::new();
+    for path in find_named_files(&root.join("playbooks"), "playbook.json") {
+        if let Some(json) = read_json(&path, &mut diagnostics) {
+            playbook_refs::check(&path, &json, &mut diagnostics);
+        }
+    }
+    report.merge(ValidationReport::from_diagnostics(diagnostics));
+    report
 }
 
 fn validate_named_json_collection(
