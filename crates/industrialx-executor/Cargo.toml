@@ -1,0 +1,24 @@
+[package]
+name = "industrialx-executor"
+publish = false
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Deterministic, advisory-only native executor for Industrial-X playbooks (loopback HTTP service)."
+repository.workspace = true
+homepage.workspace = true
+
+[lib]
+name = "industrialx_executor"
+
+[[bin]]
+name = "industrialx-executor"
+path = "src/main.rs"
+
+[dependencies]
+industrial-asset-x = { path = "../.." }
+industrialx-baseline-models.workspace = true
+industrialx-features.workspace = true
+jsonschema.workspace = true
+serde_json.workspace = true

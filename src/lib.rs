@@ -133,6 +133,13 @@ pub fn list_components(root: &Path) -> Result<Vec<CatalogItem>, Vec<Diagnostic>>
     list_json_items(&root.join("components"), "component.manifest.json", &["id"])
 }
 
+/// Runs the cross-reference checks that the playbook JSON Schema cannot express.
+pub fn playbook_ref_diagnostics(json: &Value) -> Vec<Diagnostic> {
+    let mut diagnostics = Vec::new();
+    playbook_refs::check(Path::new("playbook"), json, &mut diagnostics);
+    diagnostics
+}
+
 pub fn validate_catalog(root: &Path) -> ValidationReport {
     let mut report = ValidationReport::ok();
     report.merge(validate_catalog_descriptor(root));
