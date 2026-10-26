@@ -778,6 +778,17 @@ name = "industrialx-core"
 version = "0.1.0"
 
 [[package]]
+name = "industrialx-executor"
+version = "0.1.0"
+dependencies = [
+ "industrial-asset-x",
+ "industrialx-baseline-models",
+ "industrialx-features",
+ "jsonschema",
+ "serde_json",
+]
+
+[[package]]
 name = "industrialx-features"
 version = "0.1.0"
 

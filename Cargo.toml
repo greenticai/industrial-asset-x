@@ -39,6 +39,7 @@ members = [
     ".",
     "crates/industrialx-core",
     "crates/industrialx-timeseries",
+    "crates/industrialx-executor",
     "crates/industrialx-features",
     "crates/industrialx-baseline-models",
     "crates/industrialx-wasm-abi",
