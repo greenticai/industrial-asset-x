@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "industrial-x://playbooks/playbook.schema.json",
   "title": "Industrial-X Playbook",
+  "x-schema-version": "1.1.0",
   "description": "A maintenance playbook is a data document. It names the asset template, the signals it needs, the features and scoring that read them, and the recommendations an engineer reviews. It never carries a command: a recommendation is advice and requires evidence.",
   "type": "object",
   "additionalProperties": false,
@@ -126,7 +127,63 @@
         }
       }
     },
-    "feedback_questions": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+    "feedback_questions": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "providers": {
+      "description": "Providers this playbook reads from, with the permissions it requests. Ids must exist in playbooks/provider-catalog.json and permissions must be read-only; the release gate (docs/playbook-release-gate.md) decides, so the refusal carries a stable code.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+          "permissions": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": { "type": "string", "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$" }
+          }
+        }
+      }
+    },
+    "evidence_requirements": {
+      "description": "Evidence names this playbook declares. When present, every evidence_required item and every baseline_scoring.evidence_mapping item must be declared here.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "historian_queries": {
+      "description": "Historian reads. The gate, not this schema, requires `window` and `max_points` and bounds them, so a missing bound is refused with a stable code.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "signal"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+          "signal": { "type": "string", "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$" },
+          "provider": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+          "window": { "type": "string", "description": "Look-back duration, <integer><s|m|h|d>, at most 30d." },
+          "max_points": { "type": "integer", "description": "Upper bound on returned points, 1 to 100000." }
+        }
+      }
+    },
+    "actions": {
+      "description": "Actions the playbook may propose. Only read-only kinds pass the gate; no actions means advice only.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "kind"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+          "kind": { "type": "string", "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$" },
+          "rule": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+          "component": { "type": "string", "minLength": 1 },
+          "failure_mode": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
   },
   "$defs": {
     "risk_level": { "type": "string", "enum": ["low", "medium", "high"] }

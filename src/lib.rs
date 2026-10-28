@@ -3,6 +3,7 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
 use std::path::{Path, PathBuf};
 
+mod playbook_gate;
 mod playbook_refs;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -137,6 +138,7 @@ pub fn list_components(root: &Path) -> Result<Vec<CatalogItem>, Vec<Diagnostic>>
 pub fn playbook_ref_diagnostics(json: &Value) -> Vec<Diagnostic> {
     let mut diagnostics = Vec::new();
     playbook_refs::check(Path::new("playbook"), json, &mut diagnostics);
+    playbook_gate::check(Path::new("playbook"), json, &mut diagnostics);
     diagnostics
 }
 
@@ -403,6 +405,7 @@ fn validate_playbooks(root: &Path) -> ValidationReport {
     for path in find_named_files(&root.join("playbooks"), "playbook.json") {
         if let Some(json) = read_json(&path, &mut diagnostics) {
             playbook_refs::check(&path, &json, &mut diagnostics);
+            playbook_gate::check(&path, &json, &mut diagnostics);
         }
     }
     report.merge(ValidationReport::from_diagnostics(diagnostics));

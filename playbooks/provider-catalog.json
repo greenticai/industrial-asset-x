@@ -1,0 +1,8 @@
+{
+  "version": "1.0.0",
+  "providers": [
+    { "id": "historian-readonly", "permissions": ["read_timeseries"] },
+    { "id": "asset-registry-readonly", "permissions": ["read_asset_registry"] },
+    { "id": "work-request-draft", "permissions": ["create_draft_work_request"] }
+  ]
+}
