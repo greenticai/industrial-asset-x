@@ -40,7 +40,9 @@
   "runtime": {
     "memoryLimitMB": 64,
     "permissions": {
-      "network": [],
+      "network": [
+        "http://127.0.0.1:8787/*"
+      ],
       "secrets": [],
       "callExtensionKinds": []
     },
