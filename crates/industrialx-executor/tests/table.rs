@@ -332,3 +332,38 @@ fn the_same_request_gives_the_same_bytes() {
     let body = request(150.0, 100.0);
     assert_eq!(post("/execute", &body), post("/execute", &body));
 }
+
+#[test]
+fn validate_reports_release_gate_violations_in_the_usual_error_shape() {
+    let mut playbook = reference();
+    playbook["actions"] = json!([{"id": "trip", "kind": "write_setpoint"}]);
+    playbook["historian_queries"] = json!([{"id": "all-history", "signal": "oil_temperature"}]);
+    let (status, out) = post("/validate", &json!({"playbook": playbook}));
+    assert_eq!(status, 200, "{out}");
+    assert_eq!(out["valid"], false, "{out}");
+    let errors = out["errors"].as_array().expect("errors");
+    for expected in [
+        "playbook.action_control_forbidden",
+        "playbook.historian_query_unbounded",
+    ] {
+        let hit = errors
+            .iter()
+            .find(|e| e["code"] == expected)
+            .unwrap_or_else(|| panic!("{expected} missing from {out}"));
+        assert!(
+            hit["field"].as_str().is_some_and(|f| !f.is_empty()),
+            "{hit}"
+        );
+        assert!(
+            hit["message"].as_str().is_some_and(|m| !m.is_empty()),
+            "{hit}"
+        );
+        assert_eq!(hit.as_object().expect("object").len(), 3, "{hit}");
+    }
+}
+
+#[test]
+fn validate_still_accepts_the_reference_playbook_after_the_gate() {
+    let (_, out) = post("/validate", &reference());
+    assert_eq!(out["valid"], true, "{out}");
+}
