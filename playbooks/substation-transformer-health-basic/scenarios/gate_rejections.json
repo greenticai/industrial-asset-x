@@ -1,0 +1,74 @@
+{
+  "scenario": "gate_rejections",
+  "synthetic": true,
+  "cases": [
+    {
+      "name": "invented_signal",
+      "description": "Historian query reads a signal the playbook never declared.",
+      "patch": {
+        "historian_queries": [
+          {
+            "id": "q-ghost",
+            "signal": "ghost_signal",
+            "window": "1d",
+            "max_points": 1000
+          }
+        ]
+      },
+      "expect_code": "playbook.invented_signal",
+      "expect_field": "historian_queries[0].signal"
+    },
+    {
+      "name": "unbounded_historian_query",
+      "description": "Historian query with no window and no max_points.",
+      "patch": {
+        "historian_queries": [
+          {
+            "id": "q-all",
+            "signal": "oil_temperature"
+          }
+        ]
+      },
+      "expect_code": "playbook.historian_query_unbounded",
+      "expect_field": "historian_queries[0].window"
+    },
+    {
+      "name": "control_action",
+      "description": "Action that would write a setpoint.",
+      "patch": {
+        "actions": [
+          {
+            "id": "set-fan",
+            "kind": "write_setpoint"
+          }
+        ]
+      },
+      "expect_code": "playbook.action_control_forbidden",
+      "expect_field": "actions[0].kind"
+    },
+    {
+      "name": "unapproved_provider",
+      "description": "Provider outside the approved catalog.",
+      "patch": {
+        "providers": [
+          {
+            "id": "unknown-provider"
+          }
+        ]
+      },
+      "expect_code": "playbook.provider_not_approved",
+      "expect_field": "providers[0].id"
+    },
+    {
+      "name": "undeclared_evidence",
+      "description": "Evidence declaration omits what a rule requires.",
+      "patch": {
+        "evidence_requirements": [
+          "residual"
+        ]
+      },
+      "expect_code": "playbook.evidence_not_declared",
+      "expect_field": "recommendation_rules[0].evidence_required"
+    }
+  ]
+}
