@@ -28,6 +28,10 @@ cp describe.json "$STAGE/"
 # Shipped beside the extension so a host can serve it; describe.json declares no key for it.
 cp ../../playbooks/playbook.schema.json "$STAGE/playbook.schema.json"
 cp "$WASM_PATH" "$STAGE/extension.wasm"
+# Dialect service address read by the designer (exactly {"url": ...}); it is only
+# used when it matches a `runtime.permissions.network` pattern in describe.json.
+mkdir -p "$STAGE/assets"
+cp assets/dialect-service.json "$STAGE/assets/dialect-service.json"
 
 WASM_SHA256="$(shasum -a 256 "$STAGE/extension.wasm" | cut -d' ' -f1)"
 sed "s/0000000000000000000000000000000000000000000000000000000000000000/${WASM_SHA256}/g"   "$STAGE/describe.json" > "$STAGE/describe.json.tmp"
